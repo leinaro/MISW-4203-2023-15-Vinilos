@@ -25,15 +25,12 @@ class ProvidesModule {
         val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
 
         val moshi = Moshi.Builder()
-            //.add(HomeAdapter())
             .add(KotlinJsonAdapterFactory()).build()
 
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
-            //.addCallAdapterFactory(ApiResponseCallAdapterFactory.create())
-            //.addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
             .build()
     }
 
