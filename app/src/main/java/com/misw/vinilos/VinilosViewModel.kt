@@ -7,6 +7,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onErrorResume
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,10 +23,19 @@ class VinilosViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            vinilosRepository.getAlbums().collect { albums ->
+            vinilosRepository.getAlbums()
+                .catch {
+                    setState(
+                        state.value.copy(
+                            error = it.message,
+                        )
+                    )
+                }
+                .collect { albums ->
                 setState(
                     state.value.copy(
                         albums = albums,
+                        error = null
                     )
                 )
             }
