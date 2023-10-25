@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
+import com.misw.vinilos.ui.components.AlbumsList
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -143,12 +144,13 @@ fun MainScreen(
             )
         },
     ) { paddingValues ->
-        NavHost(navController = navController, startDestination = "albums") {
+        NavHost(
+            navController = navController,
+            startDestination = "albums",
+            modifier = Modifier.padding(paddingValues)
+        ) {
             composable("albums") {
-                Text(
-                    text = "Albums ${state.albums.toString()}",
-                    modifier = modifier.padding(paddingValues)
-                )
+                AlbumsList(albums = state.albums)
             }
             composable("artists") {
                 Text(
