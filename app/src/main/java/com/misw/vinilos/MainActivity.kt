@@ -36,7 +36,7 @@ import com.misw.vinilos.data.model.Musician
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
-import com.misw.vinilos.ui.components.AlbumsList
+import com.misw.vinilos.ui.album.AlbumsList
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -155,17 +155,7 @@ fun MainScreen(
                 AlbumsList(albums = state.albums)
             }
             composable("artists") {
-                MusicianListScreen(musicianList = listOf(Musician("1",
-                    "Rubén Blades Bellido de Luna",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
-                    "Es un cantante, compositor, músico, actor, abogado, político y activista panameño. Ha desarrollado gran parte de su carrera artística en la ciudad de Nueva York.",
-                    "1948-07-16T00:00:00-05:00"
-                ),Musician("2",
-                    "shakira",
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
-                    "kajshdñlkjahskldjhaklñjs",
-                    "1948-07-16T00:00:00-05:00"
-                )))
+                MusicianListScreen(musicianList = state.musicians)
             }
             composable("collections") {
                 Text(
