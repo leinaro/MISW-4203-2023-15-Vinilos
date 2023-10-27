@@ -2,11 +2,18 @@ package com.misw.vinilos.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,9 +24,11 @@ import androidx.compose.ui.unit.dp
 import com.misw.vinilos.Album
 import androidx.compose.material3.Text
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AlbumsList(albums: List<Album>) {
+fun AlbumsList(albums: List<Album>,  navigateToMainAccountCreation: () -> Unit) {
     Card(modifier = Modifier.background(Color.Transparent)) {
         Text(
             text = "Albumes",
@@ -38,7 +47,26 @@ fun AlbumsList(albums: List<Album>) {
                 AlbumItem(album = albums[index])
             }
         }
+        FloatingActionButton(
+            onClick = {
+                navigateToMainAccountCreation()
+            },
+            modifier = Modifier
+                .padding(16.dp)
+                .size(56.dp) // Tamaño del FloatingActionButton
+                .offset(
+                    x = 16.dp, // Ajusta la posición en el eje X
+                    y = 16.dp // Ajusta la posición en el eje Y
+                ),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Agregar álbum",
+            )
+        }
+
     }
+
 }
 
 @Preview
@@ -63,5 +91,5 @@ fun AlbumsListPreview() {
         )
         // Add more mock albums for preview
     )
-    AlbumsList(albums = mockAlbums)
+    AlbumsList(albums = mockAlbums, {})
 }

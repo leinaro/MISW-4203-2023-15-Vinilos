@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.ui.AlbumCreate
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
@@ -150,7 +151,10 @@ fun MainScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             composable("albums") {
-                AlbumsList(albums = state.albums)
+                AlbumsList(albums = state.albums, {navController.navigate("albums-create")})
+            }
+            composable("albums-create"){
+                AlbumCreate()
             }
             composable("artists") {
                 Text(
