@@ -1,4 +1,4 @@
-package com.misw.vinilos.ui.components
+package com.misw.vinilos.ui.album
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview

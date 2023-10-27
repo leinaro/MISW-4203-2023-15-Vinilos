@@ -23,15 +23,22 @@ class VinilosViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            vinilosRepository.getAlbums()
-                .catch {
-                    setState(
-                        state.value.copy(
-                            error = it.message,
-                        )
+            getMusicians()
+            getAlbums()
+
+        }
+    }
+
+    private suspend fun getAlbums() {
+        vinilosRepository.getAlbums()
+            .catch {
+                setState(
+                    state.value.copy(
+                        error = it.message,
                     )
-                }
-                .collect { albums ->
+                )
+            }
+            .collect { albums ->
                 setState(
                     state.value.copy(
                         albums = albums,
@@ -39,10 +46,29 @@ class VinilosViewModel @Inject constructor(
                     )
                 )
             }
-        }
     }
 
     fun setState(newState: VinilosViewState) {
         _state.value = newState
+    }
+
+
+    private suspend fun getMusicians(){
+        vinilosRepository.getMusicians()
+            .catch {
+                setState(
+                    state.value.copy(
+                        error = it.message,
+                    )
+                )
+            }
+            .collect { musicians ->
+                setState(
+                    state.value.copy(
+                        musicians = musicians,
+                        error = null
+                    )
+                )
+            }
     }
 }

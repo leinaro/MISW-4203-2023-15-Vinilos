@@ -1,4 +1,4 @@
-package com.misw.vinilos.ui.components
+package com.misw.vinilos.ui.album
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
