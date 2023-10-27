@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.vinilos.data.model
 
 import com.squareup.moshi.Json
 
