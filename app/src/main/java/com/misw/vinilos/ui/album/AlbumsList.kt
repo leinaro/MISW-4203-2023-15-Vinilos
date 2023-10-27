@@ -1,10 +1,14 @@
 package com.misw.vinilos.ui.album
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -19,28 +23,29 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun AlbumsList(albums: List<Album>) {
-    Card(modifier = Modifier.background(Color.Transparent)) {
-        Text(
-            text = "Albumes",
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-            fontSize = 24.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp, start = 10.dp, end = 10.dp, top = 10.dp)
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.padding(16.dp)
-        ) {
-            items(albums.size) { index ->
-                AlbumItem(album = albums[index])
-            }
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = Modifier.padding(24.dp)
+    ) {
+        item(span = { GridItemSpan(2) }) {
+            Text(
+                text = "Albumes",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                fontSize = 24.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                //.padding(bottom = 8.dp, start = 10.dp, end = 10.dp, top = 10.dp)
+            )
+        }
+
+        items(items = albums) { album ->
+            AlbumItem(album = album)
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AlbumsListPreview() {
     val mockAlbums = listOf(

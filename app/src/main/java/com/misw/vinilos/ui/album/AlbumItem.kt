@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -30,38 +31,26 @@ fun AlbumItem(album: Album) {
             .build()
     )
 
-    Card(
+    Column(
         modifier = Modifier
-            .padding(16.dp)
-            .background(Color.Transparent),
-        shape = RoundedCornerShape(16.dp),
+            .padding(8.dp)
+            .fillMaxWidth(),
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth().background(Color.Transparent),
-        ) {
-            Card (
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Image(
-                    painter = painter,
-                    contentDescription = "test",
-                    modifier = Modifier.fillMaxWidth(),
-                    contentScale = ContentScale.Fit
-                )
-            }
+        Image(
+            painter = painter,
+            contentDescription = "test",
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)),
+            contentScale = ContentScale.Fit,
+        )
 
-
-            Text(
-                text = "${album.name} - ${album.genre}",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 20.dp, bottom = 10.dp, start = 4.dp, end = 4.dp)
-                    .fillMaxWidth()
-            )
-        }
+        Text(
+            text = "${album.name} - ${album.genre}",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 20.dp, bottom = 10.dp, start = 4.dp, end = 4.dp)
+                .fillMaxWidth()
+        )
     }
 }
 
