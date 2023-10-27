@@ -1,9 +1,10 @@
 package com.misw.vinilos
 
-import kotlinx.coroutines.Dispatchers
+import com.misw.vinilos.data.datasource.api.MusicianApi
+import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Musician
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import java.net.ConnectException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -11,6 +12,7 @@ import javax.inject.Singleton
 @Singleton
 class VinilosRepositoryImpl @Inject constructor(
         private val albumsApi: AlbumsApi,
+        private val musicianApi: MusicianApi
 ) : VinilosRepository {
         override suspend fun getAlbums(): Flow<List<Album>> {
                 return flow {
@@ -31,6 +33,23 @@ class VinilosRepositoryImpl @Inject constructor(
 
         override fun createAlbum(album: Album): Flow<Album> {
                 return albumsApi.createAlbum(album)
+        }
+
+        override suspend fun getMusicians(): Flow<List<Musician>> {
+                return flow {
+                        try {
+                                emit(musicianApi.getMusicians())//.flowOn(Dispatchers.IO)
+                        } catch (e: Exception) {
+                                when(e) {
+                                        is ConnectException -> throw UIError.ServerError
+                                        else -> emit(emptyList<Musician>())
+                                }
+                                print("Error: $e")
+                                emit(emptyList<Musician>())
+
+                                //throw e
+                        }
+                }
         }
 }
 

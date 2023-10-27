@@ -1,14 +1,15 @@
-package com.misw.vinilos.ui
+package com.misw.vinilos.ui.album
 
+import android.app.DatePickerDialog
 import android.widget.DatePicker
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -23,22 +24,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
-import com.misw.vinilos.Album
-import com.misw.vinilos.ui.components.AlbumItem
 import java.time.Instant
-import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlbumCreate() {
     var imagePath by remember { mutableStateOf("") }
-    var releaseDate by remember { mutableStateOf(Calendar.getInstance()) }
+    var albumName by remember { mutableStateOf("") }
+    var generoName by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    var selectedDateText by remember { mutableStateOf("") }
+    val calendar = Calendar.getInstance()
+    val year = calendar[Calendar.YEAR]
+    val month = calendar[Calendar.MONTH]
+    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
+    val datePicker = DatePickerDialog(
+        context,
+        { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
+            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+        }, year, month, dayOfMonth
+    )
     Card(modifier = Modifier.background(Color.Transparent)) {
         Text(
             text = "Crear Album",
@@ -63,18 +75,35 @@ fun AlbumCreate() {
             )
         }
         OutlinedTextField(
-            value = "",
+            value = albumName,
             onValueChange = { },
             label = { Text("Nombre del Álbum") },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         )
-        DatePicker(state = datePickerState, modifier = Modifier.padding(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = if (selectedDateText.isNotEmpty()) {
+                    "Selected date is $selectedDateText"
+                } else {
+                    "Please pick a date"
+                }
+            )
 
-
+            Button(
+                onClick = {
+                    datePicker.show()
+                }
+            ) {
+                Text(text = "Select a date")
+            }
+        }
         OutlinedTextField(
-            value = "",
+            value = generoName,
             onValueChange = { },
             label = { Text("Género") },
             modifier = Modifier

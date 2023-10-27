@@ -32,11 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.misw.vinilos.ui.AlbumCreate
+import com.misw.vinilos.ui.album.AlbumCreate
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
-import com.misw.vinilos.ui.components.AlbumsList
+import com.misw.vinilos.ui.album.AlbumsList
+import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -157,10 +158,7 @@ fun MainScreen(
                 AlbumCreate()
             }
             composable("artists") {
-                Text(
-                    text = "Artistass!",
-                    modifier = modifier.padding(paddingValues)
-                )
+                MusicianListScreen(musicianList = state.musicians)
             }
             composable("collections") {
                 Text(

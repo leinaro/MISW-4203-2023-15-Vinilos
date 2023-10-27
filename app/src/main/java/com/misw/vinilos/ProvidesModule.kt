@@ -1,5 +1,6 @@
 package com.misw.vinilos
 
+import com.misw.vinilos.data.datasource.api.MusicianApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -36,16 +37,25 @@ class ProvidesModule {
 
     @Provides
     @Singleton
-    fun providesCategories(
+    fun providesAlbumsApi(
         retrofit: Retrofit,
     ): AlbumsApi = retrofit.create(AlbumsApi::class.java)
+
+    @Provides
+    @Singleton
+    fun providesMusicianApi(
+        retrofit: Retrofit,
+    ): MusicianApi = retrofit.create(MusicianApi::class.java)
 
 
     @Provides
     fun providesRepository(
         albumsApi: AlbumsApi,
+        musicianApi: MusicianApi
     ): VinilosRepository = VinilosRepositoryImpl(
-        albumsApi = albumsApi
+        albumsApi = albumsApi,
+        musicianApi = musicianApi
+
     )
 
 }

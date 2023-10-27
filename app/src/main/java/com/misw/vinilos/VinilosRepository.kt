@@ -1,11 +1,11 @@
 package com.misw.vinilos
 
+import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Musician
 import kotlinx.coroutines.flow.Flow
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
 
 interface VinilosRepository {
     suspend fun getAlbums(): Flow<List<Album>>
     fun createAlbum(album: Album): Flow<Album>
+    suspend fun getMusicians(): Flow<List<Musician>>
 }
