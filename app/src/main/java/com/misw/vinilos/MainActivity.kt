@@ -7,7 +7,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
@@ -31,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.misw.vinilos.ui.album.AlbumCreate
 import com.misw.vinilos.ui.VinilosInfoDialog
@@ -118,8 +123,19 @@ fun MainScreen(
             //onDismissSnackBarState()
         }
     }
-
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
     Scaffold(
+        floatingActionButton = {
+            when (currentBackStackEntry?.destination?.route){
+                "albums" -> FloatingActionButton(
+                    onClick = {
+                        navController.navigate("albums-create")
+                    },
+                ) {
+                    Icon(Icons.Filled.Add, "Agregar nuevo.")
+                }
+            }
+        },
         topBar = {
             VinilosTopAppBar(
                 onInfoActionClick = {
@@ -152,7 +168,7 @@ fun MainScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             composable("albums") {
-                AlbumsList(albums = state.albums, {navController.navigate("albums-create")})
+                AlbumsList(albums = state.albums)
             }
             composable("albums-create"){
                 AlbumCreate()
