@@ -38,7 +38,6 @@ fun AlbumsList(albums: List<Album>) {
             AlbumItem(album = album)
         }
     }
-
 }
 
 @Preview(showBackground = true)

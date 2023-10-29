@@ -1,6 +1,5 @@
 package com.misw.vinilos.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -14,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.misw.vinilos.R
-import com.misw.vinilos.R.drawable
 import com.misw.vinilos.ui.theme.VinilosTheme
 
 

@@ -1,6 +1,8 @@
 package com.misw.vinilos
 
 import com.misw.vinilos.data.datasource.api.MusicianApi
+import com.misw.vinilos.data.repository.VinilosRepositoryImpl
+import com.misw.vinilos.domain.VinilosRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
