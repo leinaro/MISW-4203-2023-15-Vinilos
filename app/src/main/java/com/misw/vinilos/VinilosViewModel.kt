@@ -18,12 +18,16 @@ class VinilosViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
+    val isRefreshing: StateFlow<Boolean> = vinilosRepository.isRefreshing
 
     init {
+        getAllInformation()
+    }
+
+    fun getAllInformation() {
         viewModelScope.launch {
             getMusicians()
             getAlbums()
-
         }
     }
 

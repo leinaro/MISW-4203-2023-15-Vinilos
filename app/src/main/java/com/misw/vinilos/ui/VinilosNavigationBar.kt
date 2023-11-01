@@ -68,7 +68,7 @@ fun VinilosNavigationBar(
 @Preview(showBackground = true)
 @Composable
 fun VinilosNavigationBarPreview() {
-    VinilosTheme(darkTheme = true) {
+    VinilosTheme(dynamicColor = false, darkTheme = false) {
         VinilosNavigationBar(
             selected = 2
         )
