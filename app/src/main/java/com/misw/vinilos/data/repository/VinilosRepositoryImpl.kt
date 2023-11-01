@@ -1,8 +1,11 @@
-package com.misw.vinilos
+package com.misw.vinilos.data.repository
 
+import com.misw.vinilos.AlbumsApi
 import com.misw.vinilos.data.datasource.api.MusicianApi
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Musician
+import com.misw.vinilos.data.repository.UIError.ServerError
+import com.misw.vinilos.domain.VinilosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.net.ConnectException
@@ -20,7 +23,7 @@ class VinilosRepositoryImpl @Inject constructor(
                                 emit(albumsApi.getAlbums())//.flowOn(Dispatchers.IO)
                         } catch (e: Exception) {
                                 when(e) {
-                                        is ConnectException -> throw UIError.ServerError
+                                        is ConnectException -> throw ServerError
                                         else -> emit(emptyList<Album>())
                                 }
                                 print("Error: $e")

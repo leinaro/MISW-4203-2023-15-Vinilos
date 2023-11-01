@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.vinilos.domain
 
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Musician
