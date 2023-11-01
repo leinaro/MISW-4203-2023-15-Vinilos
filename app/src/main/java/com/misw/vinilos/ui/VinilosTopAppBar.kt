@@ -48,7 +48,7 @@ fun VinilosTopAppBar(
 @Composable
 @Preview
 fun VinilosTopAppBarPreview() {
-    VinilosTheme(darkTheme = true) {
+    VinilosTheme(dynamicColor = false, darkTheme = true) {
         VinilosTopAppBar()
     }
 }
