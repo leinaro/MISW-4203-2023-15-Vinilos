@@ -49,6 +49,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
@@ -125,6 +126,9 @@ class MainActivity : ComponentActivity() {
                             onRefresh = {
                                 viewModel.getAllInformation()
                             },
+                            createAlbum = { album ->
+                                viewModel.createAlbum(album)
+                            }
                         )
                     }
                 }
@@ -140,6 +144,7 @@ fun MainScreen(
     state: VinilosViewState,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
+    createAlbum: (Album) -> Unit = {},
 ) {
     val navController = rememberNavController()
 
@@ -227,7 +232,9 @@ fun MainScreen(
                     AlbumsList(albums = state.albums)
                 }
                 composable("albums-create"){
-                    AlbumCreate()
+                    AlbumCreate(
+                        onCreateAlbumClick = createAlbum
+                    )
                 }
                 composable("artists") {
                     MusicianListScreen(musicianList = state.musicians)

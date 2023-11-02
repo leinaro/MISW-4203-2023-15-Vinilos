@@ -1,7 +1,9 @@
 package com.misw.vinilos
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,5 +76,28 @@ class VinilosViewModel @Inject constructor(
                     )
                 )
             }
+    }
+
+    fun createAlbum(album: Album) {
+        viewModelScope.launch {
+            vinilosRepository.createAlbum(album)
+                .catch {
+                    setState(
+                        state.value.copy(
+                            error = it.message,
+                        )
+                    )
+                }
+                .collect { album ->
+                    Log.e("iarl", album.toString())
+
+                    /*setState(
+                        state.value.copy(
+                            musicians = musicians,
+                            error = null
+                        )
+                    )*/
+                }
+        }
     }
 }
