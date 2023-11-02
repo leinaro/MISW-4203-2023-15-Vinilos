@@ -4,12 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -34,10 +39,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -76,19 +83,50 @@ class MainActivity : ComponentActivity() {
 
             val state by viewModel.state.collectAsState()
             val isRefreshing by viewModel.isRefreshing.collectAsState()
+            val isInternetAvailable by viewModel.isInternetAvailable.collectAsState()
+
+            var offlineBannerVisible by rememberSaveable {
+                mutableStateOf(true)
+            }
 
             VinilosTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(
-                        state = state,
-                        isRefreshing = isRefreshing,
-                        onRefresh = {
-                            viewModel.getAllInformation()
-                                    },
-                    )
+                    Column(modifier = Modifier.fillMaxSize()){
+                        if (isInternetAvailable.not() && offlineBannerVisible){
+                            Box(
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surface)
+                                    .padding(4.dp)
+                                    .fillMaxWidth(),
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(4.dp),
+                                    text="Estás en modo ermitaño digital. Sin internet.",
+                                    color = MaterialTheme.colorScheme.surfaceTint,
+                                )
+                                Icon(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterEnd)
+                                        .padding(4.dp)
+                                        .clickable {
+                                            offlineBannerVisible = false
+                                        },
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = "cerrar",
+                                )
+                            }
+                        }
+                        MainScreen(
+                            state = state,
+                            isRefreshing = isRefreshing,
+                            onRefresh = {
+                                viewModel.getAllInformation()
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -207,6 +245,7 @@ fun MainScreen(
                 refreshing = isRefreshing,
                 state = pullRefreshState,
             )
+
             SnackbarHost(snackbarHostState) { data ->
                 Snackbar {
                     Text(data.visuals.message)
