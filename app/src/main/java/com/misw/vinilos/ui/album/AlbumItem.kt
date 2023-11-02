@@ -35,7 +35,7 @@ fun AlbumItem(album: Album) {
     ) {
         Image(
             painter = painter,
-            contentDescription = "test",
+            contentDescription = album.name,
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)),
             contentScale = ContentScale.Fit,
         )
