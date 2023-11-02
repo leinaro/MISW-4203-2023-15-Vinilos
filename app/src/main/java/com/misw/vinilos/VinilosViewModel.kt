@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +20,7 @@ class VinilosViewModel @Inject constructor(
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
     val isRefreshing: StateFlow<Boolean> = vinilosRepository.isRefreshing
+    var isInternetAvailable: StateFlow<Boolean> = vinilosRepository.isInternetAvailable
 
     init {
         getAllInformation()

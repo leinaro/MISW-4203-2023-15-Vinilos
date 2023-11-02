@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.vinilos.data.datasource.api
 
 import com.misw.vinilos.data.model.Album
 import kotlinx.coroutines.flow.Flow
