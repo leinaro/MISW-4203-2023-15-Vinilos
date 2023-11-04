@@ -46,6 +46,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.painter.ColorPainter
 import com.misw.vinilos.data.model.Album
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -186,7 +187,7 @@ fun AlbumCreate(
         item {
             Button(
                 onClick = {
-                   /* val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
+                    /*val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
                     val date = LocalDate.parse(selectedDateText, formatter)
 
                     // define a formatter for your desired output
@@ -197,16 +198,25 @@ fun AlbumCreate(
                     val formatted = date.format(formatterUTC)
                     println(formatted)
                     Log.e("iarl", formatted)*/
+                    try{
+                        val inputFormat = SimpleDateFormat("dd/MM/yyyy")
+                        val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+                        val date = inputFormat.parse(selectedDateText)
+                        val finalDate= outputFormat.format(date)
+                        Log.i("finalDate",  finalDate)
+                        val album = Album(
+                            name = albumName,
+                            cover = imagePath,
+                            releaseDate = finalDate,
+                            description = description,
+                            genre = generoName,
+                            recordLabel = recordLabel
+                        )
+                        onCreateAlbumClick(album)
+                    } catch (e: Exception){
+                        Log.e("Error Album", "Error"   +  e.message)
+                    }
 
-                    val album = Album(
-                        name = albumName,
-                        cover = imagePath,
-                        releaseDate = selectedDateText,
-                        description = description,
-                        genre = generoName,
-                        recordLabel = recordLabel
-                    )
-                    onCreateAlbumClick(album)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
