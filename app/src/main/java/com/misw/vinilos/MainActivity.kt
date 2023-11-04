@@ -79,9 +79,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
 
             val state by viewModel.state.collectAsState()
+            val event by viewModel.event.collectAsState()
+
             val isRefreshing by viewModel.isRefreshing.collectAsState()
             val isInternetAvailable by viewModel.isInternetAvailable.collectAsState()
 
@@ -121,6 +124,7 @@ class MainActivity : ComponentActivity() {
                         }
                         MainScreen(
                             state = state,
+                            event = event,
                             isRefreshing = isRefreshing,
                             onRefresh = {
                                 viewModel.getAllInformation()
@@ -138,6 +142,7 @@ class MainActivity : ComponentActivity() {
 fun MainScreen(
     modifier: Modifier = Modifier,
     state: VinilosViewState,
+    event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
 ) {
@@ -154,6 +159,19 @@ fun MainScreen(
         refreshing = isRefreshing,
         onRefresh = onRefresh
     )
+
+    LaunchedEffect(key1 = event){
+        when(event){
+            is VinilosEvent.NavigateBack -> {
+                navController.navigateUp()
+                //showSnackBar(event.message)
+            }
+            is VinilosEvent.ShowError -> {
+                //showSnackBar(event.message)
+            }
+            is VinilosEvent.Idle -> Unit
+        }
+    }
 
     LaunchedEffect(key1 = state.error){
         if (state.error == null) return@LaunchedEffect
@@ -267,7 +285,7 @@ fun MainScreen(
 fun MainScreenPreview() {
     VinilosTheme(dynamicColor = false, darkTheme = true) {
         MainScreen(
-            state = VinilosViewState()
+            state = VinilosViewState(),
         )
     }
 }

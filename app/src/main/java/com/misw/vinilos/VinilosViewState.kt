@@ -8,3 +8,9 @@ data class VinilosViewState(
     val musicians: List<Musician> = emptyList(),
     val error: String? = null,
 )
+
+sealed class VinilosEvent{
+   object NavigateBack: VinilosEvent()
+   object ShowError: VinilosEvent()
+   object Idle: VinilosEvent()
+}

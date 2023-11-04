@@ -2,6 +2,7 @@ package com.misw.vinilos
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +20,13 @@ class VinilosViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
+
+    private val _event: MutableStateFlow<VinilosEvent> = MutableStateFlow(VinilosEvent.Idle)
+    val event: StateFlow<VinilosEvent> get() = _event
+
     val isRefreshing: StateFlow<Boolean> = vinilosRepository.isRefreshing
     var isInternetAvailable: StateFlow<Boolean> = vinilosRepository.isInternetAvailable
+
 
     init {
         getAllInformation()
@@ -74,5 +80,9 @@ class VinilosViewModel @Inject constructor(
                     )
                 )
             }
+    }
+
+    fun setEvent(event: VinilosEvent) {
+        _event.value = event
     }
 }
