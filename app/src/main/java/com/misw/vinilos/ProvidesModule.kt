@@ -2,9 +2,9 @@ package com.misw.vinilos
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.misw.vinilos.data.datasource.api.AlbumsApi
 import com.misw.vinilos.data.datasource.api.MusicianApi
+import com.misw.vinilos.data.datasource.local.AlbumDao
 import com.misw.vinilos.data.datasource.local.MusicianDao
 import com.misw.vinilos.data.datasource.local.VinilosDatabase
 import com.squareup.moshi.Moshi
@@ -74,6 +74,14 @@ object ProvidesModule {
         vinilosDatabase: VinilosDatabase,
     ) : MusicianDao {
         return vinilosDatabase.musicianDao()
+    }
+
+
+    @Provides
+    fun providesAlbumDao(
+        vinilosDatabase: VinilosDatabase,
+    ) : AlbumDao {
+        return vinilosDatabase.albumDao()
     }
 }
 
