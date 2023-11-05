@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +22,13 @@ class VinilosViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
+
+    private val _event: MutableStateFlow<VinilosEvent> = MutableStateFlow(VinilosEvent.Idle)
+    val event: StateFlow<VinilosEvent> get() = _event
+
     val isRefreshing: StateFlow<Boolean> = vinilosRepository.isRefreshing
     var isInternetAvailable: StateFlow<Boolean> = vinilosRepository.isInternetAvailable
+
 
     init {
         getAllInformation()
@@ -90,7 +96,7 @@ class VinilosViewModel @Inject constructor(
                 }
                 .collect { album ->
                     Log.e("iarl", album.toString())
-
+                    setEvent(NavigateBack)
                     /*setState(
                         state.value.copy(
                             musicians = musicians,
@@ -99,5 +105,8 @@ class VinilosViewModel @Inject constructor(
                     )*/
                 }
         }
+    }
+    fun setEvent(event: VinilosEvent) {
+        _event.value = event
     }
 }
