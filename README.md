@@ -5,7 +5,9 @@ Esta aplicación te permite listar musicos, albunes y coleccionistas, ver su det
 # Releases: 
 
 [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases)
+
 [Wiki](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki)
+
 [Board](https://github.com/users/leinaro/projects/6/views/2)
 
 # Configuración
@@ -27,6 +29,6 @@ Esta aplicación te permite listar musicos, albunes y coleccionistas, ver su det
    
 ## Instalar APK
 
-Descargué el apk e instale el apk en su dispositivo android, recuerde dar permisos en su dispositivo para instalar apk de terceros. A continuación encontrará el ultimo APK disponible - APK: [Release 1](https://uniandes-my.sharepoint.com/:u:/g/personal/ia_rojas2_uniandes_edu_co/EcGwi9MYNSNIlArAiWZA4CoBiMEO2tUxzP9jySrM0JBZAA?e=gUmjQO), más detalles de la version en [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases#release-1---semana-3).
+Descargué el apk e instale el apk en su dispositivo android, recuerde dar permisos en su dispositivo para instalar apk de terceros. A continuación encontrará el ultimo APK disponible - APK: [Release 2](https://uniandes-my.sharepoint.com/:u:/g/personal/ia_rojas2_uniandes_edu_co/EWspVSiK7NNPkQNvPsbfEuYBBR3Q8ilkUpgoMNRDOk0KEw?e=lkxZsm), más detalles de la version en [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases#release-1---semana-4).
 
 Para instalar otras versiones vaya a [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases)
