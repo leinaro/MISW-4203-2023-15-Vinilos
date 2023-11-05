@@ -1,14 +1,23 @@
 package com.misw.vinilos
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -30,17 +39,21 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.misw.vinilos.ui.album.AlbumCreate
+import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
+import com.misw.vinilos.ui.album.AlbumCreate
 import com.misw.vinilos.ui.album.AlbumsList
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
@@ -49,14 +62,14 @@ import kotlinx.coroutines.launch
 
 class SnackbarVisualsWithError(
     override val message: String,
-    val isError: Boolean
+    val isError: Boolean,
 ) : SnackbarVisuals {
     override val actionLabel: String
-        get() = if (isError) "Error" else "OK"
+        get() = if (isError) "OK" else "OK"
     override val withDismissAction: Boolean
         get() = false
     override val duration: SnackbarDuration
-        get() = SnackbarDuration.Short
+        get() = SnackbarDuration.Long
 
 }
 
@@ -67,29 +80,76 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
 
             val state by viewModel.state.collectAsState()
+            val event by viewModel.event.collectAsState()
+
+            val isRefreshing by viewModel.isRefreshing.collectAsState()
+            val isInternetAvailable by viewModel.isInternetAvailable.collectAsState()
+
+            var offlineBannerVisible by rememberSaveable {
+                mutableStateOf(true)
+            }
 
             VinilosTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen(
-                        state = state
-                    )
+                    Column(modifier = Modifier.fillMaxSize()){
+                        if (isInternetAvailable.not() && offlineBannerVisible){
+                            Box(
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surface)
+                                    .padding(4.dp)
+                                    .fillMaxWidth(),
+                            ) {
+                                Text(
+                                    modifier = Modifier.padding(4.dp),
+                                    text="Estás en modo ermitaño digital. Sin internet.",
+                                    color = MaterialTheme.colorScheme.surfaceTint,
+                                )
+                                Icon(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterEnd)
+                                        .padding(4.dp)
+                                        .clickable {
+                                            offlineBannerVisible = false
+                                        },
+                                    imageVector = Icons.Filled.Close,
+                                    contentDescription = "cerrar",
+                                )
+                            }
+                        }
+                        MainScreen(
+                            state = state,
+                            event = event,
+                            isRefreshing = isRefreshing,
+                            onRefresh = {
+                                viewModel.getAllInformation()
+                            },
+                            createAlbum = { album ->
+                                viewModel.createAlbum(album)
+                            }
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
+    modifier: Modifier = Modifier,
     state: VinilosViewState,
-    modifier: Modifier = Modifier
+    event: VinilosEvent = VinilosEvent.Idle,
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {},
+    createAlbum: (Album) -> Unit = {},
 ) {
     val navController = rememberNavController()
 
@@ -98,16 +158,35 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     var isInfoDialogVisible by remember { mutableStateOf(false) }
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = onRefresh
+    )
+
+    LaunchedEffect(key1 = event){
+        when(event){
+            is VinilosEvent.NavigateBack -> {
+                navController.navigateUp()
+                //showSnackBar(event.message)
+            }
+            is VinilosEvent.ShowError -> {
+                //showSnackBar(event.message)
+            }
+            is VinilosEvent.Idle -> Unit
+        }
+    }
 
     LaunchedEffect(key1 = state.error){
         if (state.error == null) return@LaunchedEffect
         try {
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
-                    SnackbarVisualsWithError(
-                        state.error,
+                    visuals = SnackbarVisualsWithError(
+                        message = state.error,
                         isError = true,
-                    )
+                    ),
                 )
                 when (result) {
                     SnackbarResult.ActionPerformed -> {
@@ -115,7 +194,6 @@ fun MainScreen(
                     }
                     SnackbarResult.Dismissed -> {
                         //Do Something
-                        Log.e("iarl", "SnackbarResult.Dismissed")
                     }
                 }
             }
@@ -123,7 +201,7 @@ fun MainScreen(
             //onDismissSnackBarState()
         }
     }
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+
     Scaffold(
         floatingActionButton = {
             when (currentBackStackEntry?.destination?.route){
@@ -144,13 +222,7 @@ fun MainScreen(
             )
         },
         snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-                Snackbar(
-                    modifier = Modifier,
-                ) {
-                    Text(data.visuals.message)
-                }
-            }
+            //
         },
         bottomBar = {
             VinilosNavigationBar(
@@ -162,25 +234,47 @@ fun MainScreen(
             )
         },
     ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = "albums",
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable("albums") {
-                AlbumsList(albums = state.albums)
+        Box(modifier = modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+        ){
+            NavHost(
+                navController = navController,
+                startDestination = "albums",
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState)
+            ) {
+                composable("albums") {
+                    AlbumsList(albums = state.albums)
+                }
+                composable("albums-create"){
+                    AlbumCreate(
+                        onCreateAlbumClick = createAlbum
+                    )
+                }
+                composable("artists") {
+                    MusicianListScreen(musicianList = state.musicians)
+                }
+                composable("collections") {
+                    Text(
+                        text = "Collections!",
+                        modifier = modifier.padding(paddingValues)
+                    )
+                }
             }
-            composable("albums-create"){
-                AlbumCreate()
-            }
-            composable("artists") {
-                MusicianListScreen(musicianList = state.musicians)
-            }
-            composable("collections") {
-                Text(
-                    text = "Collections!",
-                    modifier = modifier.padding(paddingValues)
-                )
+
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+            )
+
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar {
+                    Text(data.visuals.message)
+                }
             }
         }
     }
@@ -196,7 +290,9 @@ fun MainScreen(
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    VinilosTheme(darkTheme = true) {
-        MainScreen(VinilosViewState())
+    VinilosTheme(dynamicColor = false, darkTheme = true) {
+        MainScreen(
+            state = VinilosViewState(),
+        )
     }
 }

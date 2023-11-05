@@ -4,17 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.misw.vinilos.data.model.Album
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -38,7 +35,7 @@ fun AlbumItem(album: Album) {
     ) {
         Image(
             painter = painter,
-            contentDescription = "test",
+            contentDescription = album.name,
             modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)),
             contentScale = ContentScale.Fit,
         )
