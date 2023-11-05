@@ -48,7 +48,11 @@ class VinilosRepositoryImpl @Inject constructor(
                 return flow {
                         try {
                                 _isRefreshing.value = true
-                                emit(remoteDataSource.getAlbums())
+                                emit(localDataSource.getAlbums())
+                                val albums = remoteDataSource.getAlbums()
+                                emit(albums)
+                                val albumsEntityList = albums.map { it.toEntity() }
+                                localDataSource.insertAlbums(albumsEntityList)
                                 _isRefreshing.value = false
                         } catch (e: Exception) {
                                 _isRefreshing.value = false
@@ -77,12 +81,11 @@ class VinilosRepositoryImpl @Inject constructor(
                                 _isRefreshing.value = true
                                 emit(localDataSource.getMusicians())
                                 val musicians = remoteDataSource.getMusicians()
+                                emit(musicians)
                                 val musicianEntityList = musicians.map { it.toEntity() }
                                 localDataSource.insertMusicians(musicianEntityList)
-                                emit(musicians)
                                 _isRefreshing.value = false
                         } catch (e: Exception) {
-                                e.printStackTrace()
                                 _isRefreshing.value = false
                                 e.toUiError()
                         }
@@ -91,7 +94,7 @@ class VinilosRepositoryImpl @Inject constructor(
 }
 
 fun Exception.toUiError() {
-        print("Error: $this")
+        this.printStackTrace()
         when(this) {
                 is ConnectException -> throw UIError.NetworkError
                 is SocketException -> throw UIError.ServerError

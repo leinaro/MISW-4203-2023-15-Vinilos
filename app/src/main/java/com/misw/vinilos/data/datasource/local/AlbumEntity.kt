@@ -16,7 +16,7 @@ data class AlbumEntity(
     @ColumnInfo(name ="description") val description: String,
     @ColumnInfo(name ="genre") val genre: String,
     @ColumnInfo(name ="record_label") val recordLabel: String,
-    )
+)
 
 
 fun AlbumEntity.toDto() = Album(
