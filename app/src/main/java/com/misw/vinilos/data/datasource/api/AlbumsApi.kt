@@ -14,6 +14,6 @@ interface AlbumsApi {
 
 
         @POST(ALBUMS)
-        fun createAlbum(@Body album: Album): Flow<Album>
+        suspend fun createAlbum(@Body album: Album): Album
 }
 

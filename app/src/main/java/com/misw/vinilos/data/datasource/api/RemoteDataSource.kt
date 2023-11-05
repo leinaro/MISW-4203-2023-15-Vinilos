@@ -8,6 +8,6 @@ class RemoteDataSource @Inject constructor(
     private val musicianApi: MusicianApi,
 ) {
     suspend fun getAlbums() = albumsApi.getAlbums()
-    fun createAlbum(album: Album) = albumsApi.createAlbum(album)
+    suspend fun createAlbum(album: Album) = albumsApi.createAlbum(album)
     suspend fun getMusicians() = musicianApi.getMusicians()
 }
