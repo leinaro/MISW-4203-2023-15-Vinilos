@@ -221,16 +221,6 @@ fun AlbumCreate(
                 Text("Crear")
             }
         }
-item {
-    Button(
-        onClick = {
-            // Lógica para crear el álbum
-            viewModel?.setEvent(VinilosEvent.NavigateBack)
-
-        },
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Text("Crear")
     }
 }
 
