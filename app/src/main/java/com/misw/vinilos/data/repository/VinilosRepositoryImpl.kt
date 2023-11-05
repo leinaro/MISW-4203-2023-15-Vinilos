@@ -58,7 +58,17 @@ class VinilosRepositoryImpl @Inject constructor(
         }
 
         override fun createAlbum(album: Album): Flow<Album> {
-                return remoteDataSource.createAlbum(album)
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(remoteDataSource.createAlbum(album))
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                e.printStackTrace()
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+                }
         }
 
         override suspend fun getMusicians(): Flow<List<Musician>> {
