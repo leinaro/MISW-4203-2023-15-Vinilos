@@ -1,14 +1,20 @@
 package com.misw.vinilos
 
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -55,10 +61,15 @@ class MainActivityTest {
         composeTestRule.onNodeWithContentDescription("Agregar nuevo.").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Agregar nuevo.").performClick()
         composeTestRule.onNodeWithText("Crear Álbum").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Path de la Imagen").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Url de la Imagen").assertIsDisplayed()
         composeTestRule.onNodeWithText("Nombre del Álbum").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Fecha de lanzamiento").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Description").assertIsDisplayed()
         composeTestRule.onNodeWithText("Género").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Canción").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Discográfica").assertIsDisplayed()
+        Thread.sleep(2000)
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(7)
+        Thread.sleep(2000)
         composeTestRule.onNodeWithText("Crear").assertIsDisplayed()
     }
 

@@ -39,6 +39,7 @@ import com.misw.vinilos.VinilosViewModel
 import java.util.Calendar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.testTag
 import com.misw.vinilos.data.model.Album
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -83,6 +84,7 @@ fun AlbumCreate(
     )
     LazyColumn(
         modifier = Modifier
+            .testTag("CreateAlbumContainer")
             .fillMaxSize()
             .padding(16.dp)
     ) {
