@@ -96,53 +96,6 @@ fun AlbumDetail(album: Album?) {
                 .fillMaxWidth()
         )
     }
-
-//    Box(modifier = Modifier.fillMaxSize()) {
-//        Column {
-//            Image(
-//                painter = painter,
-//                contentDescription = null,
-//                modifier = Modifier.fillMaxSize(),
-//                contentScale = ContentScale.Fit
-//            )
-//        }
-//        Column(
-//            modifier = Modifier
-//                .align(Alignment.BottomStart)
-//                .fillMaxWidth()
-//                .padding(16.dp),
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text(
-//                text = album?.name ?: "",
-//                style = typography.headlineSmall,
-//                modifier = Modifier
-//                    .padding(bottom = 8.dp)
-//                    .align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = "Genero: ${album?.genre}",
-//                style = typography.headlineSmall,
-//                modifier = Modifier
-//                    .padding(bottom = 4.dp)
-//                    .align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = "Año: ${album?.releaseDate}",
-//                style = typography.headlineSmall,
-//                modifier = Modifier
-//                    .padding(bottom = 16.dp)
-//                    .align(Alignment.CenterHorizontally)
-//            )
-//            Text(
-//                text = album?.description ?: "", // Este debe ser el contenido real del álbum
-//                style = typography.bodyMedium,
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//        }
-//    }
-
-
 }
 
 @Composable
