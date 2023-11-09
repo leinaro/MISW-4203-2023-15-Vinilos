@@ -1,5 +1,6 @@
 package com.misw.vinilos.ui.album
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -14,10 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.misw.vinilos.data.model.Album
 
 @Composable
-fun AlbumsList(albums: List<Album>) {
+fun AlbumsList(albums: List<Album>, navController: NavController) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(24.dp)
@@ -35,7 +38,7 @@ fun AlbumsList(albums: List<Album>) {
         }
 
         items(items = albums) { album ->
-            AlbumItem(album = album)
+            AlbumItem(album = album, navController = navController)
         }
     }
 }
@@ -62,5 +65,5 @@ fun AlbumsListPreview() {
         )
         // Add more mock albums for preview
     )
-    AlbumsList(albums = mockAlbums)
+    AlbumsList(albums = mockAlbums, navController = rememberNavController())
 }

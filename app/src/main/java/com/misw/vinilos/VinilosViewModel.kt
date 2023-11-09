@@ -60,6 +60,27 @@ class VinilosViewModel @Inject constructor(
             }
     }
 
+    fun getAlbum(albumId: Int) {
+        viewModelScope.launch {
+            vinilosRepository.getAlbum(albumId)
+                .catch {
+                    setState(
+                        state.value.copy(
+                            error = it.message,
+                        )
+                    )
+                }
+                .collect { album ->
+                    setState(
+                        state.value.copy(
+                            album = album,
+                            error = null
+                        )
+                    )
+                }
+        }
+    }
+
     fun setState(newState: VinilosViewState) {
         _state.value = newState
     }

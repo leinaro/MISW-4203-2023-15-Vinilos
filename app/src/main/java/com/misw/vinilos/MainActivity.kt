@@ -54,6 +54,7 @@ import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
 import com.misw.vinilos.ui.album.AlbumCreate
+import com.misw.vinilos.ui.album.AlbumDetail
 import com.misw.vinilos.ui.album.AlbumsList
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
@@ -132,6 +133,9 @@ class MainActivity : ComponentActivity() {
                             },
                             createAlbum = { album ->
                                 viewModel.createAlbum(album)
+                            },
+                            albumDetail = { albumId ->
+                                viewModel.getAlbum(albumId)
                             }
                         )
                     }
@@ -150,6 +154,7 @@ fun MainScreen(
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
     createAlbum: (Album) -> Unit = {},
+    albumDetail: (Int) -> Unit = {},
 ) {
     val navController = rememberNavController()
 
@@ -247,7 +252,7 @@ fun MainScreen(
                     .pullRefresh(pullRefreshState)
             ) {
                 composable("albums") {
-                    AlbumsList(albums = state.albums)
+                    AlbumsList(albums = state.albums, navController = navController)
                 }
                 composable("albums-create"){
                     AlbumCreate(
@@ -262,6 +267,14 @@ fun MainScreen(
                         text = "Collections!",
                         modifier = modifier.padding(paddingValues)
                     )
+                }
+                composable("album/{albumId}") { backStackEntry ->
+                    val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
+                    LaunchedEffect(key1 = albumId){
+                        if (albumId == null) return@LaunchedEffect
+                        albumDetail(albumId)
+                    }
+                    AlbumDetail(album = state.album)
                 }
             }
 

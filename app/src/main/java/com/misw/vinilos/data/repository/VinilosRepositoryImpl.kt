@@ -91,6 +91,22 @@ class VinilosRepositoryImpl @Inject constructor(
                         }
                 }
         }
+
+        override fun getAlbum(albumId: Int?): Flow<Album> {
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(localDataSource.getAlbum(albumId))
+                                val album = remoteDataSource.getAlbum(albumId)
+                                emit(album)
+                                localDataSource.insertAlbum(album.toEntity())
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+                }
+        }
 }
 
 fun Exception.toUiError() {

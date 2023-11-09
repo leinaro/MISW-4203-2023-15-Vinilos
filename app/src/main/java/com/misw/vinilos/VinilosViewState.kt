@@ -7,6 +7,7 @@ data class VinilosViewState(
     val albums: List<Album> = emptyList(),
     val musicians: List<Musician> = emptyList(),
     val error: String? = null,
+    val album: Album? = null,
 )
 
 sealed class VinilosEvent{
