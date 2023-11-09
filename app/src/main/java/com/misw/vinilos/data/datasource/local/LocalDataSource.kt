@@ -22,4 +22,10 @@ class LocalDataSource @Inject constructor(
     suspend fun insertAlbums(albumsEntityList: List<AlbumEntity>) {
         albumDao.insert(albumsEntityList)
     }
+
+    suspend fun getAlbum(albumId: Int?) = albumDao.getAlbum(albumId).toDto()
+
+    suspend fun insertAlbum(albumEntity: AlbumEntity) {
+        albumDao.insertAlbum(albumEntity)
+    }
 }

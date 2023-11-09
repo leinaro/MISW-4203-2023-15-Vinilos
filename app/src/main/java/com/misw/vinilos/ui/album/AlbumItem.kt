@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.misw.vinilos.data.model.Album
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,11 +17,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 
 @Composable
-fun AlbumItem(album: Album) {
+fun AlbumItem(album: Album, navController: NavController) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(album.cover)
@@ -31,7 +34,9 @@ fun AlbumItem(album: Album) {
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable(onClick = { navController.navigate("album/${album.id}") }),
+
     ) {
         Image(
             painter = painter,
@@ -62,6 +67,7 @@ fun AlbumItemPreview() {
             description = "Album description",
             genre = "Album genre",
             recordLabel = "Album record label",
-        )
+        ),
+        navController = rememberNavController()
     )
 }
