@@ -45,17 +45,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
 import com.misw.vinilos.ui.album.AlbumCreate
 import com.misw.vinilos.ui.album.AlbumDetail
 import com.misw.vinilos.ui.album.AlbumsList
+import com.misw.vinilos.ui.collector.CollectorDetailScreen
+import com.misw.vinilos.ui.collector.CollectorListScreen
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -155,11 +161,12 @@ fun MainScreen(
     onRefresh: () -> Unit = {},
     createAlbum: (Album) -> Unit = {},
     albumDetail: (Int) -> Unit = {},
+    getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
 
     var selectedItem by remember { mutableIntStateOf(0) }
-    val items = listOf("albums", "artists", "collections")
+    val items = listOf("albums", "artists", "collectors")
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     var isInfoDialogVisible by remember { mutableStateOf(false) }
@@ -172,7 +179,7 @@ fun MainScreen(
 
     LaunchedEffect(key1 = event){
         when(event){
-            is VinilosEvent.NavigateBack -> {
+            is NavigateBack -> {
                 navController.navigateUp()
                 //showSnackBar(event.message)
             }
@@ -262,10 +269,21 @@ fun MainScreen(
                 composable("artists") {
                     MusicianListScreen(musicianList = state.musicians)
                 }
-                composable("collections") {
-                    Text(
-                        text = "Collections!",
-                        modifier = modifier.padding(paddingValues)
+                composable("collectors") {
+                    CollectorListScreen(
+                        collectorList = state.collectors
+                    )
+                }
+                composable(
+                    route = "collector-detail",
+                    arguments = listOf(
+                        navArgument("collectorId") { type = NavType.IntType }
+                    )
+                ) { backStackEntry ->
+                    val collectorId = backStackEntry.arguments?.getInt("collectorId")
+                    val collector = getCollector(collectorId ?: -1)
+                    CollectorDetailScreen(
+                        collector = null
                     )
                 }
                 composable("album/{albumId}") { backStackEntry ->

@@ -38,6 +38,7 @@ class VinilosViewModel @Inject constructor(
         viewModelScope.launch {
             getMusicians()
             getAlbums()
+            getCollectors()
         }
     }
 
@@ -95,10 +96,21 @@ class VinilosViewModel @Inject constructor(
                     )
                 )
             }
-            .collect { musicians ->
+    }
+
+    private suspend fun getCollectors() {
+        vinilosRepository.getCollectors()
+            .catch {
                 setState(
                     state.value.copy(
-                        musicians = musicians,
+                        error = it.message,
+                    )
+                )
+            }
+            .collect { collectors ->
+                setState(
+                    state.value.copy(
+                        collectors = collectors,
                         error = null
                     )
                 )
