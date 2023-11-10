@@ -36,7 +36,7 @@ fun VinilosNavigationBar(
             label = "artistas",
         ),
         NavigationItem(
-            icon = painterResource(id = R.drawable.ic_collections),
+            icon = painterResource(id = R.drawable.ic_collectors),
             label = "colecciones",
         ),
     )

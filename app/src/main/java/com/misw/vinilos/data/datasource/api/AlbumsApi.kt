@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 private const val ALBUMS = "/albums"
 interface AlbumsApi {
@@ -15,5 +16,8 @@ interface AlbumsApi {
 
         @POST(ALBUMS)
         suspend fun createAlbum(@Body album: Album): Album
+
+        @GET("$ALBUMS/{id}")
+        suspend fun getAlbum(@Path("id") albumId: Int?): Album
 }
 
