@@ -3,6 +3,7 @@ package com.misw.vinilos.data.repository
 import com.misw.vinilos.data.datasource.api.RemoteDataSource
 import com.misw.vinilos.data.datasource.local.LocalDataSource
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
 import com.misw.vinilos.data.model.toEntity
 import com.misw.vinilos.domain.VinilosRepository
@@ -92,6 +93,7 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
+
         override fun getAlbum(albumId: Int?): Flow<Album> {
                 return flow {
                         try {
@@ -105,6 +107,23 @@ class VinilosRepositoryImpl @Inject constructor(
                                 _isRefreshing.value = false
                                 e.toUiError()
                         }
+                }
+        }
+        override suspend fun getCollectors(): Flow<List<Collector>> {
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(localDataSource.getCollectors())
+                                val collectors = remoteDataSource.getCollectors()
+                                emit(collectors)
+                                val collectorEntityList = collectors.map { it.toEntity() }
+                                localDataSource.insertCollectors(collectorEntityList)
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+
                 }
         }
 }

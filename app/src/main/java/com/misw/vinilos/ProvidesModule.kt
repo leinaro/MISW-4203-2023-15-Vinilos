@@ -3,8 +3,10 @@ package com.misw.vinilos
 import android.content.Context
 import androidx.room.Room
 import com.misw.vinilos.data.datasource.api.AlbumsApi
+import com.misw.vinilos.data.datasource.api.CollectorApi
 import com.misw.vinilos.data.datasource.api.MusicianApi
 import com.misw.vinilos.data.datasource.local.AlbumDao
+import com.misw.vinilos.data.datasource.local.CollectorDao
 import com.misw.vinilos.data.datasource.local.MusicianDao
 import com.misw.vinilos.data.datasource.local.VinilosDatabase
 import com.squareup.moshi.Moshi
@@ -57,6 +59,12 @@ object ProvidesModule {
 
     @Provides
     @Singleton
+    fun providesCollectorApi(
+        retrofit: Retrofit,
+    ): CollectorApi = retrofit.create(CollectorApi::class.java)
+
+    @Provides
+    @Singleton
     fun providesVinilosDatabase(
         @ApplicationContext appContext: Context,
     ) : VinilosDatabase {
@@ -82,6 +90,13 @@ object ProvidesModule {
         vinilosDatabase: VinilosDatabase,
     ) : AlbumDao {
         return vinilosDatabase.albumDao()
+    }
+
+    @Provides
+    fun providesCollectorDao(
+        vinilosDatabase: VinilosDatabase,
+    ) : CollectorDao {
+        return vinilosDatabase.collectorDao()
     }
 }
 
