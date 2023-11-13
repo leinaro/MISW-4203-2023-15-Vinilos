@@ -80,6 +80,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithText("artistas").assertIsDisplayed()
         composeTestRule.onNodeWithText("artistas").performClick()
         composeTestRule.onNodeWithText("Artistas").assertIsDisplayed()
+        Thread.sleep(2000)
         composeTestRule.onAllNodesWithContentDescription("foto artista")[0].assertExists()
         composeTestRule.onAllNodesWithText("Rubén Blades Bellido de Luna")[0].assertIsDisplayed()
     }
