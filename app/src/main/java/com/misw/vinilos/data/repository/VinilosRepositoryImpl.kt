@@ -66,7 +66,10 @@ class VinilosRepositoryImpl @Inject constructor(
                 return flow {
                         try {
                                 _isRefreshing.value = true
-                                emit(remoteDataSource.createAlbum(album))
+                                val album = remoteDataSource.createAlbum(album)
+                                emit(album)
+                                val albumEntity = album.toEntity()
+                                localDataSource.insertAlbum(albumEntity)
                                 _isRefreshing.value = false
                         } catch (e: Exception) {
                                 e.printStackTrace()

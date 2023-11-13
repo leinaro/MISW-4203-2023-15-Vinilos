@@ -9,3 +9,4 @@ interface MusicianApi {
     @GET(MUSICIANS)
     suspend fun getMusicians(): List<Musician>
 }
+

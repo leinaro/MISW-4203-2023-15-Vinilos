@@ -3,15 +3,16 @@ package com.misw.vinilos
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.VinilosEvent.NavigateBack
+import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +23,8 @@ class VinilosViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
+
+    private val mutex = Mutex()
 
     private val _event: MutableStateFlow<VinilosEvent> = MutableStateFlow(VinilosEvent.Idle)
     val event: StateFlow<VinilosEvent> get() = _event
@@ -45,17 +48,14 @@ class VinilosViewModel @Inject constructor(
     private suspend fun getAlbums() {
         vinilosRepository.getAlbums()
             .catch {
-                setState(
-                    state.value.copy(
-                        error = it.message,
-                    )
+                setEvent(
+                    VinilosEvent.ShowError(it.message ?: "Error al obtener los albums")
                 )
             }
             .collect { albums ->
                 setState(
                     state.value.copy(
                         albums = albums,
-                        error = null
                     )
                 )
             }
@@ -65,17 +65,14 @@ class VinilosViewModel @Inject constructor(
         viewModelScope.launch {
             vinilosRepository.getAlbum(albumId)
                 .catch {
-                    setState(
-                        state.value.copy(
-                            error = it.message,
-                        )
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al obtener los albumes")
                     )
                 }
                 .collect { album ->
                     setState(
                         state.value.copy(
                             album = album,
-                            error = null
                         )
                     )
                 }
@@ -90,17 +87,14 @@ class VinilosViewModel @Inject constructor(
     private suspend fun getMusicians(){
         vinilosRepository.getMusicians()
             .catch {
-                setState(
-                    state.value.copy(
-                        error = it.message,
-                    )
+                setEvent(
+                    VinilosEvent.ShowError(it.message ?: "Error al obtener los musicos")
                 )
             }
             .collect { musicians ->
                 setState(
                     state.value.copy(
                         musicians = musicians,
-                        error = null
                     )
                 )
             }
@@ -109,18 +103,15 @@ class VinilosViewModel @Inject constructor(
     private suspend fun getCollectors() {
         vinilosRepository.getCollectors()
             .catch {
-                setState(
-                    state.value.copy(
-                        error = it.message,
-                    )
+                setEvent(
+                    VinilosEvent.ShowError(it.message ?: "Error al obtener coleccionistas")
                 )
             }
             .collect { collectors ->
                 setState(
                     state.value.copy(
                         collectors = collectors,
-                        error = null
-                    )
+                 )
                 )
             }
     }
@@ -129,10 +120,8 @@ class VinilosViewModel @Inject constructor(
         viewModelScope.launch {
             vinilosRepository.createAlbum(album)
                 .catch {
-                    setState(
-                        state.value.copy(
-                            error = it.message,
-                        )
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al crear el album")
                     )
                 }
                 .collect { album ->
@@ -148,6 +137,12 @@ class VinilosViewModel @Inject constructor(
         }
     }
     fun setEvent(event: VinilosEvent) {
-        _event.value = event
+        viewModelScope.launch {
+            mutex.withLock {
+                _event.value = event
+            }
+        }
     }
 }
+
+

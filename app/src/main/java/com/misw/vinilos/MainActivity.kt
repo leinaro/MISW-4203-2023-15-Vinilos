@@ -51,7 +51,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
+import com.misw.vinilos.VinilosEvent.NavigateTo
+import com.misw.vinilos.VinilosEvent.ShowError
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.ui.VinilosInfoDialog
@@ -179,26 +182,12 @@ fun MainScreen(
         onRefresh = onRefresh
     )
 
-    LaunchedEffect(key1 = event){
-        when(event){
-            is NavigateBack -> {
-                navController.navigateUp()
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.ShowError -> {
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.Idle -> Unit
-        }
-    }
-
-    LaunchedEffect(key1 = state.error){
-        if (state.error == null) return@LaunchedEffect
+    fun showSnackBar(message: String){
         try {
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
                     visuals = SnackbarVisualsWithError(
-                        message = state.error,
+                        message = message,
                         isError = true,
                     ),
                 )
@@ -213,6 +202,21 @@ fun MainScreen(
             }
         } finally {
             //onDismissSnackBarState()
+        }
+    }
+
+    LaunchedEffect(key1 = event){
+        when(event){
+            is NavigateBack -> {
+                navController.navigateUp()
+            }
+            is ShowError -> {
+                showSnackBar(event.message)
+            }
+            is Idle -> Unit
+            is NavigateTo -> {
+                navController.navigate(event.route)
+            }
         }
     }
 

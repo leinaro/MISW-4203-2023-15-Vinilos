@@ -8,12 +8,13 @@ data class VinilosViewState(
     val albums: List<Album> = emptyList(),
     val musicians: List<Musician> = emptyList(),
     val collectors: List<Collector> = emptyList(),
-    val error: String? = null,
     val album: Album? = null,
 )
 
 sealed class VinilosEvent{
+   data class NavigateTo(val route:String): VinilosEvent()
    object NavigateBack: VinilosEvent()
-   object ShowError: VinilosEvent()
+   data class ShowError(val message: String): VinilosEvent()
    object Idle: VinilosEvent()
 }
+
