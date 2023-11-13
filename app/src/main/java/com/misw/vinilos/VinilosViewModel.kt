@@ -96,6 +96,14 @@ class VinilosViewModel @Inject constructor(
                     )
                 )
             }
+            .collect { musicians ->
+                setState(
+                    state.value.copy(
+                        musicians = musicians,
+                        error = null
+                    )
+                )
+            }
     }
 
     private suspend fun getCollectors() {
