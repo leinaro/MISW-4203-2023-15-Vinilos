@@ -62,6 +62,7 @@ import com.misw.vinilos.ui.album.AlbumDetail
 import com.misw.vinilos.ui.album.AlbumsList
 import com.misw.vinilos.ui.collector.CollectorDetailScreen
 import com.misw.vinilos.ui.collector.CollectorListScreen
+import com.misw.vinilos.ui.musician.MusicianDetail
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -161,6 +162,7 @@ fun MainScreen(
     onRefresh: () -> Unit = {},
     createAlbum: (Album) -> Unit = {},
     albumDetail: (Int) -> Unit = {},
+    musicianDetail: (Int) -> Unit = {},
     getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
@@ -267,7 +269,7 @@ fun MainScreen(
                     )
                 }
                 composable("artists") {
-                    MusicianListScreen(musicianList = state.musicians)
+                    MusicianListScreen(musicianList = state.musicians, navController = navController)
                 }
                 composable("collectors") {
                     CollectorListScreen(
@@ -293,6 +295,14 @@ fun MainScreen(
                         albumDetail(albumId)
                     }
                     AlbumDetail(album = state.album)
+                }
+                composable("musician/{musicianId}") { backStackEntry ->
+                    val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
+                    LaunchedEffect(key1 = musicianId){
+                        if (musicianId == null) return@LaunchedEffect
+                        musicianDetail(musicianId)
+                    }
+                    MusicianDetail(musician = state.musicians.get(musicianId?.minus(1)!!))
                 }
             }
 

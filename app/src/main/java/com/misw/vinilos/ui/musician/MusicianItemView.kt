@@ -2,6 +2,7 @@ package com.misw.vinilos.ui.musician
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -16,13 +17,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.misw.vinilos.data.model.Musician
 
 @Composable
-fun musicianItemView(musician: Musician) {
+fun musicianItemView(musician: Musician, navController: NavController) {
 
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
@@ -31,7 +34,9 @@ fun musicianItemView(musician: Musician) {
             .build()
     )
 
-    Column (modifier = Modifier.padding(8.dp).fillMaxWidth()) {
+    Column (modifier = Modifier.padding(8.dp).fillMaxWidth()
+        .clickable(onClick = { navController.navigate("musician/${musician.id}") })
+        ) {
         Image(
             painter = painter,
             contentDescription = "foto artista",
@@ -61,7 +66,8 @@ fun musicianItemViewPreview(){
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "Es un cantante, compositor, músico, actor, abogado, político y activista panameño. Ha desarrollado gran parte de su carrera artística en la ciudad de Nueva York.",
         "1948-07-16T00:00:00-05:00"
-        ))
+        ),navController = rememberNavController()
+    )
 
 
 
