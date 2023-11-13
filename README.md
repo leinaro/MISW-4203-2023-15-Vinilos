@@ -34,7 +34,7 @@ Esta aplicación te permite listar musicos, albunes y coleccionistas, ver su det
    
 ## Instalar APK
 
-Descargué el apk e instale el apk en su dispositivo android, recuerde dar permisos en su dispositivo para instalar apk de terceros. A continuación encontrará el ultimo APK disponible - APK: [Release 2](https://uniandes-my.sharepoint.com/:u:/g/personal/ia_rojas2_uniandes_edu_co/EWspVSiK7NNPkQNvPsbfEuYBBR3Q8ilkUpgoMNRDOk0KEw?e=cDNgtw), más detalles de la version en [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases#release-2---semana-4).
+Descargué el apk e instale el apk en su dispositivo android, recuerde dar permisos en su dispositivo para instalar apk de terceros. A continuación encontrará el ultimo APK disponible - APK: [Release 3](https://uniandes-my.sharepoint.com/:u:/g/personal/ia_rojas2_uniandes_edu_co/EZxQtCRE13RAuAy6jtewS3YBTD8EPLJKekciU-dbZKE7xg?e=qJFiWZ), más detalles de la version en [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/releases/tag/semana-5).
 
 Para instalar otras versiones vaya a [Releases](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/wiki/Releases)
 

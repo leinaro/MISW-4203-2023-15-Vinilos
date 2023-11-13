@@ -1,6 +1,7 @@
 package com.misw.vinilos
 
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
 import com.misw.vinilos.domain.VinilosRepository
 import kotlinx.coroutines.flow.Flow
@@ -76,6 +77,25 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
     override suspend fun getMusicians(): Flow<List<Musician>> {
         return flow {
             emit(musicianList)
+        }
+    }
+
+    override suspend fun getCollectors(): Flow<List<Collector>> {
+        return flow {
+            emit(emptyList())
+        }
+    }
+
+    override fun getAlbum(albumId: Int?): Flow<Album> {
+        return flow {
+            emit(Album(
+                name = "Interstellar",
+                cover = "https://f4.bcbits.com/img/a3726590002_65",
+                releaseDate = "2014-01-01",
+                description = "Album description",
+                genre = "Album genre",
+                recordLabel = "Album record label",
+            ),)
         }
     }
 
