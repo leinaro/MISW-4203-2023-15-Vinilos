@@ -37,7 +37,7 @@ fun VinilosNavigationBar(
         ),
         NavigationItem(
             icon = painterResource(id = R.drawable.ic_collectors),
-            label = "colecciones",
+            label = "coleccionistas",
         ),
     )
 

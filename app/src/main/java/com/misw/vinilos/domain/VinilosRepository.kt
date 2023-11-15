@@ -14,6 +14,8 @@ interface VinilosRepository {
     suspend fun getCollectors(): Flow<List<Collector>>
 
     fun getAlbum(albumId: Int?): Flow<Album>
+    fun getCollector(collectorId: Int?): Flow<Collector>
+    fun getMusician(musicianId: Int?): Flow<Musician>
 
     val isRefreshing: StateFlow<Boolean>
     val isInternetAvailable: StateFlow<Boolean>

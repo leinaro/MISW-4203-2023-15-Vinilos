@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-private val albumList = listOf(
+val albumList = listOf(
     Album(
         name = "Buscando América",
         cover = "https://f4.bcbits.com/img/a3726590002_65",
@@ -88,14 +88,16 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
 
     override fun getAlbum(albumId: Int?): Flow<Album> {
         return flow {
-            emit(Album(
-                name = "Interstellar",
-                cover = "https://f4.bcbits.com/img/a3726590002_65",
-                releaseDate = "2014-01-01",
-                description = "Album description",
-                genre = "Album genre",
-                recordLabel = "Album record label",
-            ),)
+            emit(
+                Album(
+                    name = "Interstellar",
+                    cover = "https://f4.bcbits.com/img/a3726590002_65",
+                    releaseDate = "2014-01-01",
+                    description = "Album description",
+                    genre = "Album genre",
+                    recordLabel = "Album record label",
+                ),
+            )
         }
     }
 

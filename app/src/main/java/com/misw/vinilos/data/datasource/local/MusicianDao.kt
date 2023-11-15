@@ -12,4 +12,10 @@ interface MusicianDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(musicianEntityList: List<MusicianEntity>)
+
+    @Query("SELECT * FROM musicianentity WHERE id = :musicianId")
+    suspend fun get(musicianId: Int?): MusicianEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(musicianEntity: MusicianEntity)
 }

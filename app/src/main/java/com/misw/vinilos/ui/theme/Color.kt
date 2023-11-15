@@ -12,4 +12,5 @@ val Light_Green80 = Color(0xFF052410)
 val Green = Color(0xFF1ED760)
 
 val Gray80 = Color(0xFF272727)
+val Ligth_Gray = Color(0xFFD9E0DC)
 

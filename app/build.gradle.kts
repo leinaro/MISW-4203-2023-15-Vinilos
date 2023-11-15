@@ -16,7 +16,6 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner = "com.misw.vinilos.VinilosTestRunner"
 
         vectorDrawables {
@@ -88,6 +87,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.dagger:hilt-android-testing:2.44")
     kaptTest("com.google.dagger:hilt-android-compiler:2.44")
+    testImplementation("io.mockk:mockk:+")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:+")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

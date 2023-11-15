@@ -51,8 +51,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
-import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.VinilosEvent.NavigateTo
+import com.misw.vinilos.VinilosEvent.ShowError
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
@@ -138,12 +140,6 @@ class MainActivity : ComponentActivity() {
                             onRefresh = {
                                 viewModel.getAllInformation()
                             },
-                            createAlbum = { album ->
-                                viewModel.createAlbum(album)
-                            },
-                            albumDetail = { albumId ->
-                                viewModel.getAlbum(albumId)
-                            }
                         )
                     }
                 }
@@ -160,13 +156,8 @@ fun MainScreen(
     event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    createAlbum: (Album) -> Unit = {},
-    albumDetail: (Int) -> Unit = {},
-    musicianDetail: (Int) -> Unit = {},
-    getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
-
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("albums", "artists", "collectors")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -179,26 +170,12 @@ fun MainScreen(
         onRefresh = onRefresh
     )
 
-    LaunchedEffect(key1 = event){
-        when(event){
-            is NavigateBack -> {
-                navController.navigateUp()
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.ShowError -> {
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.Idle -> Unit
-        }
-    }
-
-    LaunchedEffect(key1 = state.error){
-        if (state.error == null) return@LaunchedEffect
+    fun showSnackBar(message: String){
         try {
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
                     visuals = SnackbarVisualsWithError(
-                        message = state.error,
+                        message = message,
                         isError = true,
                     ),
                 )
@@ -216,6 +193,21 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(key1 = event){
+        when(event){
+            is NavigateBack -> {
+                navController.navigateUp()
+            }
+            is ShowError -> {
+                showSnackBar(event.message)
+            }
+            is Idle -> Unit
+            is NavigateTo -> {
+                navController.navigate(event.route)
+            }
+        }
+    }
+
     Scaffold(
         floatingActionButton = {
             when (currentBackStackEntry?.destination?.route){
@@ -230,6 +222,7 @@ fun MainScreen(
         },
         topBar = {
             VinilosTopAppBar(
+                navController = navController,
                 onInfoActionClick = {
                     isInfoDialogVisible = true
                 }
@@ -260,49 +253,40 @@ fun MainScreen(
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
-                composable("albums") {
-                    AlbumsList(albums = state.albums, navController = navController)
-                }
-                composable("albums-create"){
-                    AlbumCreate(
-                        onCreateAlbumClick = createAlbum
+                composable(Routes.Albums.path) {
+                    AlbumsList(
+                        albums = state.albums,
                     )
                 }
-                composable("artists") {
+                composable(Routes.AlbumsCreate.path){
+                    AlbumCreate()
+                }
+                composable(Routes.Artists.path) {
                     MusicianListScreen(musicianList = state.musicians, navController = navController)
                 }
-                composable("collectors") {
+                composable(Routes.Collectors.path) {
                     CollectorListScreen(
                         collectorList = state.collectors
                     )
                 }
                 composable(
-                    route = "collector-detail",
+                    route = Routes.CollectorDetail.path,
                     arguments = listOf(
                         navArgument("collectorId") { type = NavType.IntType }
                     )
                 ) { backStackEntry ->
                     val collectorId = backStackEntry.arguments?.getInt("collectorId")
-                    val collector = getCollector(collectorId ?: -1)
                     CollectorDetailScreen(
-                        collector = null
+                        collectorId = collectorId
                     )
                 }
-                composable("album/{albumId}") { backStackEntry ->
+                composable(Routes.AlbumDetail.path) { backStackEntry ->
                     val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
-                    LaunchedEffect(key1 = albumId){
-                        if (albumId == null) return@LaunchedEffect
-                        albumDetail(albumId)
-                    }
-                    AlbumDetail(album = state.album)
+                    AlbumDetail(albumId = albumId)
                 }
-                composable("musician/{musicianId}") { backStackEntry ->
+                composable(Routes.ArtistDetail.path) { backStackEntry ->
                     val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
-                    LaunchedEffect(key1 = musicianId){
-                        if (musicianId == null) return@LaunchedEffect
-                        musicianDetail(musicianId)
-                    }
-                    MusicianDetail(musician = state.musicians.get(musicianId?.minus(1)!!))
+                    MusicianDetail(musicianId = musicianId)
                 }
             }
 

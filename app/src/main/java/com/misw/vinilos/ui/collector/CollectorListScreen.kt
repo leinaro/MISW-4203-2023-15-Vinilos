@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.misw.vinilos.Routes
 
 import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
@@ -49,9 +50,10 @@ fun CollectorListScreen(collectorList: List<Collector>) {
             CollectorItemView(
                 collector=collector,
                 onCollectorSelected = {
-                    //viewModel?.setEvent(VinilosEvent.NavigateTo(Routes.CollectorDetail.path.replace("{collectorId}",collector.id.toString())))
+                    viewModel?.setEvent(VinilosEvent.NavigateTo(
+                        Routes.CollectorDetail.path.replace("{collectorId}",collector.id.toString())))
                 }
-                )
+            )
             Divider(color = Color.Black)
         }
     }
