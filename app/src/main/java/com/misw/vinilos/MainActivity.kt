@@ -156,8 +156,6 @@ fun MainScreen(
     event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    musicianDetail: (Int) -> Unit = {},
-    getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
     var selectedItem by remember { mutableIntStateOf(0) }
@@ -288,11 +286,7 @@ fun MainScreen(
                 }
                 composable(Routes.ArtistDetail.path) { backStackEntry ->
                     val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
-                    LaunchedEffect(key1 = musicianId){
-                        if (musicianId == null) return@LaunchedEffect
-                        musicianDetail(musicianId)
-                    }
-                    MusicianDetail(musician = state.musicians.get(musicianId?.minus(1)!!))
+                    MusicianDetail(musicianId = musicianId)
                 }
             }
 

@@ -97,6 +97,24 @@ class VinilosViewModel @Inject constructor(
         }
     }
 
+    fun getMusician(musicianId: Int) {
+        viewModelScope.launch {
+            vinilosRepository.getMusician(musicianId)
+                .catch {
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al obtener los artista")
+                    )
+                }
+                .collect { musician ->
+                    setState(
+                        state.value.copy(
+                            musician = musician,
+                        )
+                    )
+                }
+        }
+    }
+
     fun setState(newState: VinilosViewState) {
         _state.value = newState
     }

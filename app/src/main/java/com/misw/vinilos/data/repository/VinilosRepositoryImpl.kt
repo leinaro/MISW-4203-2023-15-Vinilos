@@ -128,6 +128,22 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
+        override fun getMusician(musicianId: Int?): Flow<Musician> {
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(localDataSource.getMusician(musicianId))
+                                val musician = remoteDataSource.getMusician(musicianId)
+                                emit(musician)
+                                localDataSource.insertMusician(musician.toEntity())
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+                }
+        }
+
         override suspend fun getCollectors(): Flow<List<Collector>> {
                 return flow {
                         try {

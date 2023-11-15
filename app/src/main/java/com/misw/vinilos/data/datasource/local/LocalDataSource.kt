@@ -1,5 +1,6 @@
 package com.misw.vinilos.data.datasource.local
 
+import com.misw.vinilos.data.model.Musician
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -42,5 +43,11 @@ class LocalDataSource @Inject constructor(
 
     suspend fun insertCollector(collectorEntity: CollectorEntity) {
         collectorDao.insert(collectorEntity)
+    }
+
+    suspend fun getMusician(musicianId: Int?) = musicianDao.get(musicianId).toDto()
+
+    suspend fun insertMusician(musicianEntity: MusicianEntity) {
+        musicianDao.insert(musicianEntity)
     }
 }
