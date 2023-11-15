@@ -1,5 +1,6 @@
 package com.misw.vinilos.ui.album
 
+import android.app.usage.UsageEvents.Event
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,16 +12,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.VinilosEvent
+import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album
 
 @Composable
-fun AlbumsList(albums: List<Album>, navController: NavController) {
+fun AlbumsList(
+    albums: List<Album>,
+) {
+    val composeView = LocalView.current
+    val viewModel = composeView.findViewTreeViewModelStoreOwner()?.let {
+        hiltViewModel<VinilosViewModel>(it)
+    }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier.padding(24.dp)
@@ -38,7 +51,12 @@ fun AlbumsList(albums: List<Album>, navController: NavController) {
         }
 
         items(items = albums) { album ->
-            AlbumItem(album = album, navController = navController)
+            AlbumItem(
+                album = album,
+                onClick = {
+                    viewModel?.setEvent(VinilosEvent.NavigateTo("album/${album.id}"))
+                }
+            )
         }
     }
 }
@@ -65,5 +83,5 @@ fun AlbumsListPreview() {
         )
         // Add more mock albums for preview
     )
-    AlbumsList(albums = mockAlbums, navController = rememberNavController())
+    AlbumsList(albums = mockAlbums)
 }

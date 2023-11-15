@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -28,31 +27,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
-import java.util.Calendar
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.platform.testTag
 import com.misw.vinilos.data.model.Album
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AlbumCreate(
-    onCreateAlbumClick: (Album) -> Unit = {},
-) {
+fun AlbumCreate() {
     val composeView = LocalView.current
     val viewModel = composeView.findViewTreeViewModelStoreOwner()?.let {
         hiltViewModel<VinilosViewModel>(it)
@@ -212,7 +201,7 @@ fun AlbumCreate(
                             genre = generoName,
                             recordLabel = recordLabel
                         )
-                        onCreateAlbumClick(album)
+                        viewModel?.createAlbum(album)
                     } catch (e: Exception){
                         Log.e("Error Album", "Error"   +  e.message)
                     }

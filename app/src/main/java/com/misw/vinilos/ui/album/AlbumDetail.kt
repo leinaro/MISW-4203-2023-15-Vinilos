@@ -39,8 +39,15 @@ fun AlbumDetail(album: Album?) {
     val originalFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
     val targetFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-    val formattedDate = if (album?.releaseDate != null) originalFormat.parse(album.releaseDate)
-        ?.let { targetFormat.format(it) } else "Unknown Date"
+    val formattedDate = try {
+        album?.releaseDate?.let { stringDate ->
+            originalFormat.parse(stringDate)?.let { date ->
+                targetFormat.format(date)
+            }
+        }
+    } catch (e:Exception){
+        album?.releaseDate
+    }.orEmpty()
 
 
     Column (

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.misw.vinilos.R
 import com.misw.vinilos.data.model.Musician
 
 @Composable
@@ -30,8 +32,11 @@ fun musicianItemView(musician: Musician, navController: NavController) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(musician.image)
+            .error(R.drawable.baseline_broken_image_24)
             .size(Size.ORIGINAL) // Set the target size to load the image at.
-            .build()
+            .build(),
+        contentScale = ContentScale.Crop,
+       // modifier = Modifier.fillMaxWidth()
     )
 
     Column (modifier = Modifier.padding(8.dp).fillMaxWidth()

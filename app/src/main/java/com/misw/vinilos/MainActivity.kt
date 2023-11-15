@@ -55,7 +55,6 @@ import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.VinilosEvent.NavigateTo
 import com.misw.vinilos.VinilosEvent.ShowError
-import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
@@ -141,9 +140,6 @@ class MainActivity : ComponentActivity() {
                             onRefresh = {
                                 viewModel.getAllInformation()
                             },
-                            createAlbum = { album ->
-                                viewModel.createAlbum(album)
-                            },
                             albumDetail = { albumId ->
                                 viewModel.getAlbum(albumId)
                             }
@@ -163,7 +159,6 @@ fun MainScreen(
     event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    createAlbum: (Album) -> Unit = {},
     albumDetail: (Int) -> Unit = {},
     musicianDetail: (Int) -> Unit = {},
     getCollector: (Int) -> Collector? = {_-> null },
@@ -265,12 +260,12 @@ fun MainScreen(
                     .pullRefresh(pullRefreshState)
             ) {
                 composable("albums") {
-                    AlbumsList(albums = state.albums, navController = navController)
+                    AlbumsList(
+                        albums = state.albums,
+                    )
                 }
                 composable("albums-create"){
-                    AlbumCreate(
-                        onCreateAlbumClick = createAlbum
-                    )
+                    AlbumCreate()
                 }
                 composable("artists") {
                     MusicianListScreen(musicianList = state.musicians, navController = navController)

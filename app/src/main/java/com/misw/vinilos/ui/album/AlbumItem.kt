@@ -4,45 +4,66 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.misw.vinilos.data.model.Album
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize.Max
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material3.Text
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import coil.size.Size
+import com.misw.vinilos.R
+import com.misw.vinilos.R.drawable
 
 @Composable
-fun AlbumItem(album: Album, navController: NavController) {
+fun AlbumItem(
+    album: Album,
+    onClick: (Album) -> Unit = {},
+) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(album.cover)
-            .size(coil.size.Size.ORIGINAL) // Set the target size to load the image at.
-            .build()
+            .error(R.drawable.baseline_broken_image_24)
+            .size(Size.ORIGINAL)
+            .build(),
     )
 
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth()
-            .clickable(onClick = { navController.navigate("album/${album.id}") }),
+            .fillMaxSize()
+            .clickable(
+                onClick = {
+                    onClick(album)
+                }
+            ),
 
     ) {
         Image(
             painter = painter,
             contentDescription = album.name,
-            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)),
-            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.Gray)
+                .aspectRatio(1f),
+            contentScale = ContentScale.Inside,
         )
 
         Text(
@@ -68,6 +89,5 @@ fun AlbumItemPreview() {
             genre = "Album genre",
             recordLabel = "Album record label",
         ),
-        navController = rememberNavController()
     )
 }

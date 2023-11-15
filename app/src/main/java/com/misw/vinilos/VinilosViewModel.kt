@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.VinilosEvent.NavigateBack
+import com.misw.vinilos.VinilosEvent.NavigateTo
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -126,7 +127,8 @@ class VinilosViewModel @Inject constructor(
                 }
                 .collect { album ->
                     Log.e("iarl", album.toString())
-                    setEvent(NavigateBack)
+
+                    setEvent(NavigateTo("album/${album.id}"))
                     /*setState(
                         state.value.copy(
                             musicians = musicians,
