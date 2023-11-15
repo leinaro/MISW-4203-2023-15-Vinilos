@@ -61,7 +61,7 @@ fun AlbumItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color.Gray)
+                .background(Color.LightGray)
                 .aspectRatio(1f),
             contentScale = ContentScale.Inside,
         )

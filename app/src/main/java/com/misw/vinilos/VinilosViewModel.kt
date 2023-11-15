@@ -21,7 +21,6 @@ class VinilosViewModel @Inject constructor(
     private val vinilosRepository: VinilosRepository,
 ) : ViewModel() {
 
-
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
 

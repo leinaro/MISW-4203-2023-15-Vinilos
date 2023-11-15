@@ -140,9 +140,6 @@ class MainActivity : ComponentActivity() {
                             onRefresh = {
                                 viewModel.getAllInformation()
                             },
-                            albumDetail = { albumId ->
-                                viewModel.getAlbum(albumId)
-                            }
                         )
                     }
                 }
@@ -159,7 +156,6 @@ fun MainScreen(
     event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    albumDetail: (Int) -> Unit = {},
     musicianDetail: (Int) -> Unit = {},
     getCollector: (Int) -> Collector? = {_-> null },
 ) {
@@ -289,11 +285,7 @@ fun MainScreen(
                 }
                 composable("album/{albumId}") { backStackEntry ->
                     val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
-                    LaunchedEffect(key1 = albumId){
-                        if (albumId == null) return@LaunchedEffect
-                        albumDetail(albumId)
-                    }
-                    AlbumDetail(album = state.album)
+                    AlbumDetail(albumId = albumId)
                 }
                 composable("musician/{musicianId}") { backStackEntry ->
                     val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
