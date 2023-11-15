@@ -79,6 +79,24 @@ class VinilosViewModel @Inject constructor(
         }
     }
 
+    fun getCollector(collectorId: Int) {
+        viewModelScope.launch {
+            vinilosRepository.getCollector(collectorId)
+                .catch {
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al obtener los coleccionista")
+                    )
+                }
+                .collect { collector ->
+                    setState(
+                        state.value.copy(
+                            collector = collector,
+                        )
+                    )
+                }
+        }
+    }
+
     fun setState(newState: VinilosViewState) {
         _state.value = newState
     }

@@ -13,5 +13,6 @@ class RemoteDataSource @Inject constructor(
     suspend fun getMusicians() = musicianApi.getMusicians()
     suspend fun getAlbum(albumId: Int?) = albumsApi.getAlbum(albumId)
     suspend fun getCollectors() = collectorApi.getCollectors()
+    suspend fun getCollector(collectorId: Int?) = collectorApi.getCollector(collectorId)
 
 }

@@ -96,7 +96,6 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
-
         override fun getAlbum(albumId: Int?): Flow<Album> {
                 return flow {
                         try {
@@ -112,6 +111,23 @@ class VinilosRepositoryImpl @Inject constructor(
                         }
                 }
         }
+
+        override fun getCollector(collectorId: Int?): Flow<Collector> {
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(localDataSource.getCollector(collectorId))
+                                val collector = remoteDataSource.getCollector(collectorId)
+                                emit(collector)
+                                localDataSource.insertCollector(collector.toEntity())
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+                }
+        }
+
         override suspend fun getCollectors(): Flow<List<Collector>> {
                 return flow {
                         try {

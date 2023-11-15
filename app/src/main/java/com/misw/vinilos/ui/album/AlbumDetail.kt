@@ -44,12 +44,10 @@ fun AlbumDetail(albumId: Int?) {
     val state by viewModel.state.collectAsState()
 
     LaunchedEffect(key1 = null) {
-        Log.e("iarl", "albumId $albumId")
         if (albumId != null) {
             viewModel.getAlbum(albumId = albumId)
         }
     }
-    Log.e("iarl", "state $state")
 
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)

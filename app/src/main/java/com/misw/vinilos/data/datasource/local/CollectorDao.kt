@@ -13,4 +13,10 @@ interface CollectorDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(collectorEntityList: List<CollectorEntity>)
+
+    @Query("SELECT * FROM collectorentity WHERE id = :collectorId")
+    suspend fun get(collectorId: Int?): CollectorEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(collectorEntity: CollectorEntity)
 }

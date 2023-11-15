@@ -160,7 +160,6 @@ fun MainScreen(
     getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
-
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("albums", "artists", "collectors")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -225,6 +224,7 @@ fun MainScreen(
         },
         topBar = {
             VinilosTopAppBar(
+                navController = navController,
                 onInfoActionClick = {
                     isInfoDialogVisible = true
                 }
@@ -255,39 +255,38 @@ fun MainScreen(
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
-                composable("albums") {
+                composable(Routes.Albums.path) {
                     AlbumsList(
                         albums = state.albums,
                     )
                 }
-                composable("albums-create"){
+                composable(Routes.AlbumsCreate.path){
                     AlbumCreate()
                 }
-                composable("artists") {
+                composable(Routes.Artists.path) {
                     MusicianListScreen(musicianList = state.musicians, navController = navController)
                 }
-                composable("collectors") {
+                composable(Routes.Collectors.path) {
                     CollectorListScreen(
                         collectorList = state.collectors
                     )
                 }
                 composable(
-                    route = "collector-detail",
+                    route = Routes.CollectorDetail.path,
                     arguments = listOf(
                         navArgument("collectorId") { type = NavType.IntType }
                     )
                 ) { backStackEntry ->
                     val collectorId = backStackEntry.arguments?.getInt("collectorId")
-                    val collector = getCollector(collectorId ?: -1)
                     CollectorDetailScreen(
-                        collector = null
+                        collectorId = collectorId
                     )
                 }
-                composable("album/{albumId}") { backStackEntry ->
+                composable(Routes.AlbumDetail.path) { backStackEntry ->
                     val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
                     AlbumDetail(albumId = albumId)
                 }
-                composable("musician/{musicianId}") { backStackEntry ->
+                composable(Routes.ArtistDetail.path) { backStackEntry ->
                     val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
                     LaunchedEffect(key1 = musicianId){
                         if (musicianId == null) return@LaunchedEffect

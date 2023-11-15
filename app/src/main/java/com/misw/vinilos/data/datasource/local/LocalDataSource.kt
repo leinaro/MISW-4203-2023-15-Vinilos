@@ -24,10 +24,10 @@ class LocalDataSource @Inject constructor(
         albumDao.insert(albumsEntityList)
     }
 
-    suspend fun getAlbum(albumId: Int?) = albumDao.getAlbum(albumId).toDto()
+    suspend fun getAlbum(albumId: Int?) = albumDao.get(albumId).toDto()
 
     suspend fun insertAlbum(albumEntity: AlbumEntity) {
-        albumDao.insertAlbum(albumEntity)
+        albumDao.insert(albumEntity)
     }
 
     suspend fun getCollectors() = collectorDao.getAll().map {
@@ -36,5 +36,11 @@ class LocalDataSource @Inject constructor(
 
     suspend fun insertCollectors(collectorEntityList: List<CollectorEntity>) {
         collectorDao.insert(collectorEntityList)
+    }
+
+    suspend fun getCollector(collectorId: Int?) = collectorDao.get(collectorId).toDto()
+
+    suspend fun insertCollector(collectorEntity: CollectorEntity) {
+        collectorDao.insert(collectorEntity)
     }
 }
