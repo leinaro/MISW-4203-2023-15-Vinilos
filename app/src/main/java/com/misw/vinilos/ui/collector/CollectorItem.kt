@@ -35,12 +35,12 @@ fun CollectorItemView(
     ListItem(
         modifier = Modifier
             .clickable { onCollectorSelected(collector) },
-        headlineText = {
+        headlineContent = {
             Text(
                 text = "${collector.name}",
             )
         },
-        supportingText = {
+        supportingContent = {
             Row (
                 modifier = Modifier.padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically

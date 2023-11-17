@@ -66,7 +66,7 @@ fun musicianItemView(musician: Musician, navController: NavController) {
 @Preview(showBackground = true)
 @Composable
 fun musicianItemViewPreview(){
-    musicianItemView(Musician("1",
+    musicianItemView(Musician(1,
         "Rubén Blades Bellido de Luna",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "Es un cantante, compositor, músico, actor, abogado, político y activista panameño. Ha desarrollado gran parte de su carrera artística en la ciudad de Nueva York.",

@@ -1,9 +1,10 @@
 package com.misw.vinilos.data.model
 
 import com.misw.vinilos.data.datasource.local.MusicianEntity
+import com.squareup.moshi.Json
 
 data class Musician(
-    val id: String,
+    @Json val id: Int? = null,
     val name: String,
     val image: String,
     val description: String,

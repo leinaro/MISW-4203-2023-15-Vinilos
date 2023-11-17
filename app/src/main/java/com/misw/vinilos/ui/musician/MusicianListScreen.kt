@@ -34,12 +34,12 @@ fun  MusicianListScreen(musicianList : List<Musician>, navController: NavControl
 @Composable
 @Preview(showBackground = true)
 fun MusicianListScreenPreview (){
-    MusicianListScreen(musicianList = listOf(Musician("1",
+    MusicianListScreen(musicianList = listOf(Musician(1,
         "Rubén Blades Bellido de Luna",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "Es un cantante, compositor, músico, actor, abogado, político y activista panameño. Ha desarrollado gran parte de su carrera artística en la ciudad de Nueva York.",
         "1948-07-16T00:00:00-05:00"
-    ),Musician("2",
+    ),Musician(2,
         "shakira",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "kajshdñlkjahskldjhaklñjs",

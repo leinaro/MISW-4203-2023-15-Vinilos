@@ -43,6 +43,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Modifier.Companion
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -51,6 +52,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.misw.splash.SplashScreen
 import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.VinilosEvent.NavigateTo
@@ -133,14 +135,23 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         }
-                        MainScreen(
-                            state = state,
-                            event = event,
-                            isRefreshing = isRefreshing,
-                            onRefresh = {
-                                viewModel.getAllInformation()
-                            },
-                        )
+                        var showSplash by remember { mutableStateOf(true) }
+                        if (showSplash){
+                            SplashScreen(
+                                navigateToHome = {
+                                    showSplash = false
+                                }
+                            )
+                        } else {
+                            MainScreen(
+                                state = state,
+                                event = event,
+                                isRefreshing = isRefreshing,
+                                onRefresh = {
+                                    viewModel.getAllInformation()
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -151,7 +162,6 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
     state: VinilosViewState,
     event: VinilosEvent = VinilosEvent.Idle,
     isRefreshing: Boolean = false,
@@ -241,13 +251,13 @@ fun MainScreen(
             )
         },
     ) { paddingValues ->
-        Box(modifier = modifier
+        Box(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
         ){
             NavHost(
                 navController = navController,
-                startDestination = "albums",
+                startDestination = Routes.Albums.path,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
