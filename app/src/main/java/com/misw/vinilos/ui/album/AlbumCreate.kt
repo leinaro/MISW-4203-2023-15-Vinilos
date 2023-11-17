@@ -34,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.misw.vinilos.VinilosEvent.ShowError
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.repository.UIError
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -176,20 +178,10 @@ fun AlbumCreate() {
         item {
             Button(
                 onClick = {
-                    /*val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault())
-                    val date = LocalDate.parse(selectedDateText, formatter)
-
-                    // define a formatter for your desired output
-                    val formatterUTC = DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm:ss.SSSX",
-                        Locale.ENGLISH)
-
-                   // val date = LocalDate.of(2020, 5, 16)
-                    val formatted = date.format(formatterUTC)
-                    println(formatted)
-                    Log.e("iarl", formatted)*/
                     try{
                         val inputFormat = SimpleDateFormat("dd/MM/yyyy")
                         val outputFormat = SimpleDateFormat("yyyy-MM-dd")
+                        Log.e("iarl", "selectedDateText $selectedDateText")
                         val date = inputFormat.parse(selectedDateText)
                         val finalDate= outputFormat.format(date)
                         Log.i("finalDate",  finalDate)
@@ -203,11 +195,17 @@ fun AlbumCreate() {
                         )
                         viewModel?.createAlbum(album)
                     } catch (e: Exception){
+                        viewModel?.setEvent(
+                            ShowError(UIError.UnknownError.message.orEmpty())
+                        )
                         Log.e("Error Album", "Error"   +  e.message)
+                        e.printStackTrace()
                     }
 
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .testTag("AlbumCreate")
+                    .fillMaxWidth()
             ) {
                 Text("Crear")
             }

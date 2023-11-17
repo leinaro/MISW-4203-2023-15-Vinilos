@@ -175,9 +175,9 @@ class VinilosViewModel @Inject constructor(
     }
     fun setEvent(event: VinilosEvent) {
         viewModelScope.launch {
-            mutex.withLock {
+            //mutex.withLock {
                 _event.value = event
-            }
+            //}
         }
     }
 }

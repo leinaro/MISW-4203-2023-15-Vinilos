@@ -58,23 +58,36 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    // Compose
     implementation("androidx.activity:activity-compose:1.8.0")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Hilt
     implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-compiler:2.44")
+
+    // Images
+    implementation("com.airbnb.android:lottie-compose:6.1.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    // Splash
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
+
     implementation("androidx.navigation:navigation-compose:2.7.4")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.compose.material:material:1.5.4")
     implementation("androidx.room:room-runtime:2.6.0")
     kapt("androidx.room:room-compiler:2.6.0")
@@ -83,6 +96,10 @@ dependencies {
 
 // optional - Kotlin Extensions and Coroutines support for Room
     implementation ("androidx.room:room-ktx:2.6.0")
+
+
+    // Modules
+    implementation(project(mapOf("path" to ":Splash")))
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.dagger:hilt-android-testing:2.44")

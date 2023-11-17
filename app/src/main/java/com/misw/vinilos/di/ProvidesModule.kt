@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.vinilos.di
 
 import android.content.Context
 import androidx.room.Room
@@ -17,6 +17,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.OkHttpClient.Builder
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level.BODY
 import retrofit2.Retrofit
@@ -24,7 +25,6 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 private const val BASE_URL = "http://ec2-3-12-155-51.us-east-2.compute.amazonaws.com:3000/"
-
 @Module
 @InstallIn(SingletonComponent::class)
 object ProvidesModule {
@@ -33,7 +33,7 @@ object ProvidesModule {
     fun provideRetrofit(): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(BODY)
-        val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+        val client: OkHttpClient = Builder().addInterceptor(interceptor).build()
 
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory()).build()
@@ -99,4 +99,3 @@ object ProvidesModule {
         return vinilosDatabase.collectorDao()
     }
 }
-
