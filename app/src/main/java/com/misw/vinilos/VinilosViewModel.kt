@@ -8,6 +8,7 @@ import com.misw.vinilos.VinilosEvent.NavigateTo
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -20,7 +21,6 @@ import javax.inject.Inject
 class VinilosViewModel @Inject constructor(
     private val vinilosRepository: VinilosRepository,
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(VinilosViewState())
     val state: StateFlow<VinilosViewState> get() = _state
 
@@ -162,7 +162,8 @@ class VinilosViewModel @Inject constructor(
                 }
                 .collect { album ->
                     Log.e("iarl", album.toString())
-
+                    setEvent(VinilosEvent.ShowSuccess("Álbum creado con éxito"))
+                    delay(1000)
                     setEvent(NavigateTo("album/${album.id}"))
                     /*setState(
                         state.value.copy(
