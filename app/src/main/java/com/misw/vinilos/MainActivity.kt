@@ -201,6 +201,9 @@ fun MainScreen(
             is ShowError -> {
                 showSnackBar(event.message)
             }
+            is VinilosEvent.ShowSuccess -> {
+                showSnackBar(event.message)
+            }
             is Idle -> Unit
             is NavigateTo -> {
                 navController.navigate(event.route)
@@ -229,7 +232,6 @@ fun MainScreen(
             )
         },
         snackbarHost = {
-            //
         },
         bottomBar = {
             VinilosNavigationBar(

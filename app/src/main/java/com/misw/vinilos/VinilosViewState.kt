@@ -17,6 +17,7 @@ sealed class VinilosEvent{
    data class NavigateTo(val route:String): VinilosEvent()
    object NavigateBack: VinilosEvent()
    data class ShowError(val message: String): VinilosEvent()
+    data class ShowSuccess(val message: String): VinilosEvent()
    object Idle: VinilosEvent()
 }
 
