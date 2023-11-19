@@ -14,11 +14,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -73,6 +77,64 @@ fun AlbumCreate() {
             selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
         }, year, month, dayOfMonth
     )
+
+    var urlError by remember { mutableStateOf("") }
+    var nameError by remember { mutableStateOf("") }
+    var releaseDateError by remember { mutableStateOf("") }
+    var descriptionError by remember { mutableStateOf("") }
+    var genreError by remember { mutableStateOf("") }
+    var recordLabelError by remember { mutableStateOf("") }
+
+    fun validateUrl(albumName: String):Boolean {
+        urlError = if (albumName.isEmpty()) {
+            "La url no puede estar vacío"
+        } else {
+            ""
+        }
+        return urlError.isEmpty()
+    }
+    fun validateName(albumName: String):Boolean {
+        nameError = if (albumName.isEmpty()) {
+            "El nombre no puede estar vacío"
+        } else {
+            ""
+        }
+        return nameError.isEmpty()
+    }
+    fun validateReleaseDate(albumName: String):Boolean {
+        releaseDateError = if (albumName.isEmpty()) {
+            "La fecha de lanzamiento no no puede estar vacío"
+        } else {
+            ""
+        }
+        return releaseDateError.isEmpty()
+    }
+    fun validateDescription(albumName: String):Boolean {
+        descriptionError = if (albumName.isEmpty()) {
+            "La descripción no puede estar vacío"
+        } else {
+            ""
+        }
+        return descriptionError.isEmpty()
+    }
+    fun validateGenre(albumName: String):Boolean {
+        genreError = if (albumName.isEmpty()) {
+            "El genero no puede estar vacío"
+        } else {
+            ""
+        }
+        return genreError.isEmpty()
+    }
+
+    fun validateRecordLabel(albumName: String):Boolean {
+        recordLabelError = if (albumName.isEmpty()) {
+            "La discografica no puede estar vacío"
+        } else {
+            ""
+        }
+        return recordLabelError.isEmpty()
+    }
+
     LazyColumn(
         modifier = Modifier
             .testTag("CreateAlbumContainer")
@@ -101,11 +163,17 @@ fun AlbumCreate() {
                 )
                 OutlinedTextField(
                     value = imagePath,
+                    isError = urlError.isNotEmpty(),
                     onValueChange = { imagePath = it },
                     label = { Text("Url de la Imagen") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp)
+                        .padding(start = 16.dp),
+                    supportingText = if (urlError.isNotEmpty()) {
+                        ErrorMessage(nameError)
+                    } else {
+                        null
+                    },
                 )
             }
         }
@@ -113,11 +181,18 @@ fun AlbumCreate() {
         item {
             OutlinedTextField(
                 value = albumName,
-                onValueChange = { albumName = it },
+                isError = nameError.isNotEmpty(),
+                onValueChange = {
+                    albumName = it
+                    validateName(it)
+                },
                 label = { Text("Nombre del Álbum") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                modifier = Modifier.fillMaxWidth(),
+                supportingText = if (nameError.isNotEmpty()) {
+                    ErrorMessage(nameError)
+                } else {
+                    null
+                },
             )
         }
 
@@ -125,11 +200,11 @@ fun AlbumCreate() {
         item {
             OutlinedTextField(
                 value = selectedDateText,
+                isError = releaseDateError.isNotEmpty(),
                 onValueChange = { selectedDateText = it },
                 label = { Text("Fecha de lanzamiento") },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
+                    .fillMaxWidth(),
                 trailingIcon = {
                     Icon(
                         imageVector = Filled.DateRange,
@@ -140,44 +215,141 @@ fun AlbumCreate() {
                     )
                 },
                 readOnly = true,
+                supportingText = if (releaseDateError.isNotEmpty()) {
+                    ErrorMessage(releaseDateError)
+                } else {
+                    null
+                },
             )
         }
 
         item {
             OutlinedTextField(
                 value = description,
+                isError = descriptionError.isNotEmpty(),
                 onValueChange = { description = it },
                 label = { Text("Description") },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
+                    .fillMaxWidth(),
+                supportingText = if (descriptionError.isNotEmpty()) {
+                    ErrorMessage(descriptionError)
+                } else {
+                    null
+                }
             )
         }
 
         item {
-            OutlinedTextField(
-                value = generoName,
-                onValueChange = { generoName = it },
-                label = { Text("Género") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            )
+            val options = listOf("Classical", "Salsa", "Rock", "Folk")
+            var expanded by remember { mutableStateOf(false) }
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
+            ) {
+                OutlinedTextField(
+                    readOnly = true,
+                    value = generoName,
+                    isError = genreError.isNotEmpty(),
+                    onValueChange = { generoName = it },
+                    label = { Text("Género") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    supportingText = if (genreError.isNotEmpty()) {
+                        ErrorMessage(genreError)
+                    } else {
+                        null
+                    },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = expanded
+                        )
+                    },
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = {
+                        expanded = false
+                    }
+                ) {
+                    options.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            onClick = {
+                                generoName = selectionOption
+                                expanded = false
+                            },
+                            text = {
+                                Text(text = selectionOption)
+                            }
+                        )
+                    }
+                }
+            }
         }
         item {
-            OutlinedTextField(
-                value = recordLabel,
-                onValueChange = { recordLabel = it },
-                label = { Text("Discográfica") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-            )
+            val options = listOf("Sony Music", "EMI", "Discos Fuentes", "Elektra", "Fania Records")
+            var expanded by remember { mutableStateOf(false) }
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
+            ) {
+                OutlinedTextField(
+                    readOnly = true,
+                    value = recordLabel,
+                    isError = recordLabelError.isNotEmpty(),
+                    onValueChange = { recordLabel = it },
+                    label = { Text("Discográfica") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor(),
+                    supportingText = if (recordLabelError.isNotEmpty()) {
+                        ErrorMessage(recordLabelError)
+                    } else {
+                        null
+                    },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(
+                            expanded = expanded
+                        )
+                    },
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = {
+                        expanded = false
+                    }
+                ) {
+                    options.forEach { selectionOption ->
+                        DropdownMenuItem(
+                            onClick = {
+                                recordLabel = selectionOption
+                                expanded = false
+                            },
+                            text = {
+                                Text(text = selectionOption)
+                            }
+                        )
+                    }
+                }
+            }
         }
 
         item {
             Button(
                 onClick = {
+                    if (listOf(
+                            validateUrl(imagePath),
+                            validateName(albumName),
+                            validateReleaseDate(selectedDateText),
+                            validateDescription(description),
+                            validateGenre(generoName),
+                            validateRecordLabel(recordLabel),
+                        ).contains(false)){
+                        return@Button
+                    }
+
                     try{
                         val inputFormat = SimpleDateFormat("dd/MM/yyyy")
                         val outputFormat = SimpleDateFormat("yyyy-MM-dd")
@@ -217,4 +389,8 @@ fun AlbumCreate() {
 @Composable
 fun AlbumCreatePreview() {
     AlbumCreate()
+}
+
+fun ErrorMessage(message: String) =  @Composable {
+    Text(message)
 }

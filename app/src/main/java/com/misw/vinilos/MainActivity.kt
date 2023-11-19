@@ -226,7 +226,7 @@ fun MainScreen(
             when (currentBackStackEntry?.destination?.route){
                 "albums" -> FloatingActionButton(
                     onClick = {
-                        navController.navigate("albums-create")
+                        navController.navigate(Routes.AlbumsCreate.path)
                     },
                 ) {
                     Icon(Icons.Filled.Add, "Agregar nuevo.")
