@@ -3,7 +3,6 @@ package com.misw.vinilos.domain
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
-import com.misw.vinilos.data.repository.NetworkStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 

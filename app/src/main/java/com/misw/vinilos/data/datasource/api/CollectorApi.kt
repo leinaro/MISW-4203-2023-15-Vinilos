@@ -1,8 +1,6 @@
 package com.misw.vinilos.data.datasource.api
 
-import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
-import com.misw.vinilos.data.model.Musician
 import retrofit2.http.GET
 import retrofit2.http.Path
 

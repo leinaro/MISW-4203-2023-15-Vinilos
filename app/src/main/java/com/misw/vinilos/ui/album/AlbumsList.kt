@@ -1,7 +1,5 @@
 package com.misw.vinilos.ui.album
 
-import android.app.usage.UsageEvents.Event
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album

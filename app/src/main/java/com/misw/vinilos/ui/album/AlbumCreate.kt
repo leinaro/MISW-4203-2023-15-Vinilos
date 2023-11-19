@@ -1,7 +1,6 @@
 package com.misw.vinilos.ui.album
 
 import android.app.DatePickerDialog
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -38,11 +36,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import com.misw.vinilos.VinilosEvent.ShowError
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album
-import com.misw.vinilos.data.repository.UIError
-import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,20 +50,20 @@ fun AlbumCreate() {
     var imagePath by remember { mutableStateOf("") }
     var albumName by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var generoName by remember { mutableStateOf("") }
+    var genreName by remember { mutableStateOf("") }
     var recordLabel by remember { mutableStateOf("") }
 
     val defaultImage = ColorPainter(color = Color.Gray)
     val context = LocalContext.current
     var selectedDateText by rememberSaveable { mutableStateOf("") }
     val calendar = Calendar.getInstance()
-    var year by rememberSaveable {
+    val year by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.YEAR])
     }
-    var month by rememberSaveable {
+    val month by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.MONTH])
     }
-    var dayOfMonth by rememberSaveable {
+    val dayOfMonth by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.DAY_OF_MONTH])
     }
     val datePicker = DatePickerDialog(
@@ -249,9 +244,9 @@ fun AlbumCreate() {
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = generoName,
+                    value = genreName,
                     isError = genreError.isNotEmpty(),
-                    onValueChange = { generoName = it },
+                    onValueChange = { genreName = it },
                     label = { Text("Género") },
                     modifier = Modifier
                         .testTag("genre-field")
@@ -277,7 +272,7 @@ fun AlbumCreate() {
                     options.forEach { selectionOption ->
                         DropdownMenuItem(
                             onClick = {
-                                generoName = selectionOption
+                                genreName = selectionOption
                                 expanded = false
                             },
                             text = {
@@ -346,7 +341,7 @@ fun AlbumCreate() {
                             validateName(albumName),
                             validateReleaseDate(selectedDateText),
                             validateDescription(description),
-                            validateGenre(generoName),
+                            validateGenre(genreName),
                             validateRecordLabel(recordLabel),
                         ).contains(false)){
                         return@Button
@@ -357,7 +352,7 @@ fun AlbumCreate() {
                         cover = imagePath,
                         releaseDate = selectedDateText,
                         description = description,
-                        genre = generoName,
+                        genre = genreName,
                         recordLabel = recordLabel
                     )
                     viewModel?.createAlbum(album)

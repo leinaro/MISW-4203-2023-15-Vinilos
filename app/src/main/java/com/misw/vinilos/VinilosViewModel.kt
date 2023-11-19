@@ -3,7 +3,6 @@ package com.misw.vinilos
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.VinilosEvent.NavigateTo
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.domain.VinilosRepository
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 @HiltViewModel
@@ -115,7 +113,7 @@ class VinilosViewModel @Inject constructor(
         }
     }
 
-    fun setState(newState: VinilosViewState) {
+    private fun setState(newState: VinilosViewState) {
         _state.value = newState
     }
 

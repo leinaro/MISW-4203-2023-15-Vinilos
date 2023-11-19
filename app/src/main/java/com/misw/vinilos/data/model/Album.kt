@@ -1,6 +1,5 @@
 package com.misw.vinilos.data.model
 
-import androidx.room.Entity
 import com.misw.vinilos.data.datasource.local.AlbumEntity
 import com.squareup.moshi.Json
 

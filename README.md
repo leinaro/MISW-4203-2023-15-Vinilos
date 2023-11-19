@@ -41,20 +41,15 @@ Para instalar otras versiones vaya a [Releases](https://github.com/leinaro/MISW-
 ## Ejecutar pruebas Espresso
 
 1) Dentro del proyecto abrir el archivo **MainActivityTest**  que contiene las pruebas e2e con espresso.
-
 ![image](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/assets/123895702/29b6f07b-bef6-445c-bdbe-bb22bdf59621)
 
 2) seleccione el dispositivo en el que quiere ejecutar las pruebas.
-
 ![image](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/assets/123895702/157efff6-9d8c-4fb5-8c42-515a9978d2e4)
 
-
 3) Seleccionar Run Main ActivityTests como se muestra en las imágenes
-
 ![image](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/assets/123895702/6864448a-ad5f-4818-afff-3d825f41603f)
 
 4) se muestra el resultado de las pruebas.
-
 ![image](https://github.com/leinaro/MISW-4203-2023-15-Vinilos/assets/123895702/a252d384-72c0-43fb-a628-a0da9b6c0916)
 
 

@@ -1,32 +1,24 @@
 package com.misw.vinilos.ui.collector
 
-import android.provider.CalendarContract.Colors
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.ui.theme.VinilosTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CollectorItemView(
     collector: Collector,
@@ -37,7 +29,7 @@ fun CollectorItemView(
             .clickable { onCollectorSelected(collector) },
         headlineContent = {
             Text(
-                text = "${collector.name}",
+                text = collector.name,
             )
         },
         supportingContent = {
@@ -51,14 +43,14 @@ fun CollectorItemView(
                 Text(
                     modifier = Modifier.fillMaxHeight(),
                     textAlign = TextAlign.Center,
-                    text = "${collector.email}",
+                    text = collector.email,
                 )
                 Icon(
                     modifier = Modifier.padding(4.dp),
                     imageVector = Icons.Filled.Phone, contentDescription = "Phone.")
                 Text(
                     modifier = Modifier.fillMaxHeight(),
-                    text = "${collector.telephone}",
+                    text = collector.telephone,
                 )
             }
         },

@@ -25,7 +25,6 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.misw.vinilos.VinilosViewModel
-import com.misw.vinilos.data.model.Musician
 import java.text.SimpleDateFormat
 import java.util.Locale
 

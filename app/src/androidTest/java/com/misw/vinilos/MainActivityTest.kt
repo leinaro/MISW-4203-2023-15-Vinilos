@@ -15,9 +15,9 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import com.airbnb.lottie.model.LottieCompositionCache
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
@@ -27,13 +27,11 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers
 import org.hamcrest.core.IsInstanceOf
 import org.junit.After
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -51,7 +49,7 @@ class MainActivityTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    lateinit var idlingResource: LottieIdlingResource
+    private lateinit var idlingResource: LottieIdlingResource
 
     @Before
     fun setup() {
