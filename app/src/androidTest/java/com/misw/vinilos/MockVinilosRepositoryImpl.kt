@@ -64,6 +64,21 @@ val musicianList = listOf(
     ),
 )
 
+val collectorList = listOf(
+    Collector(
+        name = "Jaime Andrés Monsalve",
+        telephone=  "3102178976",
+        email= "j.monsalve@gmail.com",
+        id =  1
+    ),
+    Collector(
+        name= "María Alejandra Palacios",
+        telephone = "3502889087",
+        email= "j.palacios@outlook.es",
+        id =  2
+    )
+)
+
 class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
     override suspend fun getAlbums(): Flow<List<Album>> {
         return flow {
@@ -87,7 +102,7 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
 
     override suspend fun getCollectors(): Flow<List<Collector>> {
         return flow {
-            emit(emptyList())
+            emit(collectorList)
         }
     }
 
@@ -104,12 +119,9 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
     override fun getCollector(collectorId: Int?): Flow<Collector> {
         return flow {
             emit(
-                Collector(
-                    id = 1,
-                    name = "Collector name",
-                    telephone = "+573102178976",
-                    email = "j.monsalve@gmail.com"
-                )
+                collectorList.first { collector ->
+                    collector.id == collectorId
+                }
             )
         }
     }
