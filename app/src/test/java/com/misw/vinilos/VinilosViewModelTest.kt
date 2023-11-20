@@ -42,7 +42,7 @@ class VinilosViewModelTest(){
         emit(
             listOf(
                 Musician(
-                    id = "1",
+                    id = 1,
                     name = "Hans Zimmer",
                     image = "https://f4.bcbits.com/img/a3726590002_65",
                     birthDate = "1957-01-01",

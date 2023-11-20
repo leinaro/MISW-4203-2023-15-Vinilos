@@ -74,7 +74,7 @@ fun AlbumCreate() {
     val datePicker = DatePickerDialog(
         context,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-            selectedDateText = "$selectedDayOfMonth/${selectedMonth + 1}/$selectedYear"
+            selectedDateText = "$selectedYear-${selectedMonth + 1}-$selectedDayOfMonth"
         }, year, month, dayOfMonth
     )
 
@@ -85,40 +85,40 @@ fun AlbumCreate() {
     var genreError by remember { mutableStateOf("") }
     var recordLabelError by remember { mutableStateOf("") }
 
-    fun validateUrl(albumName: String):Boolean {
-        urlError = if (albumName.isEmpty()) {
-            "La url no puede estar vacío"
+    fun validateUrl(url: String):Boolean {
+        urlError = if (url.isEmpty()) {
+            "La url no puede estar vacía"
         } else {
             ""
         }
         return urlError.isEmpty()
     }
-    fun validateName(albumName: String):Boolean {
-        nameError = if (albumName.isEmpty()) {
+    fun validateName(name: String):Boolean {
+        nameError = if (name.isEmpty()) {
             "El nombre no puede estar vacío"
         } else {
             ""
         }
         return nameError.isEmpty()
     }
-    fun validateReleaseDate(albumName: String):Boolean {
-        releaseDateError = if (albumName.isEmpty()) {
-            "La fecha de lanzamiento no no puede estar vacío"
+    fun validateReleaseDate(date: String):Boolean {
+        releaseDateError = if (date.isEmpty()) {
+            "La fecha de lanzamiento no no puede estar vacía"
         } else {
             ""
         }
         return releaseDateError.isEmpty()
     }
-    fun validateDescription(albumName: String):Boolean {
-        descriptionError = if (albumName.isEmpty()) {
+    fun validateDescription(desc: String):Boolean {
+        descriptionError = if (desc.isEmpty()) {
             "La descripción no puede estar vacío"
         } else {
             ""
         }
         return descriptionError.isEmpty()
     }
-    fun validateGenre(albumName: String):Boolean {
-        genreError = if (albumName.isEmpty()) {
+    fun validateGenre(genre: String):Boolean {
+        genreError = if (genre.isEmpty()) {
             "El genero no puede estar vacío"
         } else {
             ""
@@ -126,9 +126,9 @@ fun AlbumCreate() {
         return genreError.isEmpty()
     }
 
-    fun validateRecordLabel(albumName: String):Boolean {
-        recordLabelError = if (albumName.isEmpty()) {
-            "La discografica no puede estar vacío"
+    fun validateRecordLabel(record: String):Boolean {
+        recordLabelError = if (record.isEmpty()) {
+            "La discografica no puede estar vacía"
         } else {
             ""
         }
@@ -170,7 +170,7 @@ fun AlbumCreate() {
                         .fillMaxWidth()
                         .padding(start = 16.dp),
                     supportingText = if (urlError.isNotEmpty()) {
-                        ErrorMessage(nameError)
+                        ErrorMessage(urlError)
                     } else {
                         null
                     },
@@ -254,6 +254,7 @@ fun AlbumCreate() {
                     onValueChange = { generoName = it },
                     label = { Text("Género") },
                     modifier = Modifier
+                        .testTag("genre-field")
                         .fillMaxWidth()
                         .menuAnchor(),
                     supportingText = if (genreError.isNotEmpty()) {
@@ -302,6 +303,7 @@ fun AlbumCreate() {
                     onValueChange = { recordLabel = it },
                     label = { Text("Discográfica") },
                     modifier = Modifier
+                        .testTag("record-field")
                         .fillMaxWidth()
                         .menuAnchor(),
                     supportingText = if (recordLabelError.isNotEmpty()) {
@@ -350,36 +352,24 @@ fun AlbumCreate() {
                         return@Button
                     }
 
-                    try{
-                        val inputFormat = SimpleDateFormat("dd/MM/yyyy")
-                        val outputFormat = SimpleDateFormat("yyyy-MM-dd")
-                        Log.e("iarl", "selectedDateText $selectedDateText")
-                        val date = inputFormat.parse(selectedDateText)
-                        val finalDate= outputFormat.format(date)
-                        Log.i("finalDate",  finalDate)
-                        val album = Album(
-                            name = albumName,
-                            cover = imagePath,
-                            releaseDate = finalDate,
-                            description = description,
-                            genre = generoName,
-                            recordLabel = recordLabel
-                        )
-                        viewModel?.createAlbum(album)
-                    } catch (e: Exception){
-                        viewModel?.setEvent(
-                            ShowError(UIError.UnknownError.message.orEmpty())
-                        )
-                        Log.e("Error Album", "Error"   +  e.message)
-                        e.printStackTrace()
-                    }
+                    val album = Album(
+                        name = albumName,
+                        cover = imagePath,
+                        releaseDate = selectedDateText,
+                        description = description,
+                        genre = generoName,
+                        recordLabel = recordLabel
+                    )
+                    viewModel?.createAlbum(album)
 
                 },
                 modifier = Modifier
                     .testTag("AlbumCreate")
                     .fillMaxWidth()
             ) {
-                Text("Crear")
+                Text(
+                    text = "Crear",
+                )
             }
         }
     }

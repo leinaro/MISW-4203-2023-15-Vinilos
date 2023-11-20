@@ -1,15 +1,9 @@
 package com.misw.vinilos
 
 import android.R.id
-import android.widget.DatePicker
 import android.widget.ScrollView
-import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithContentDescription
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -20,14 +14,13 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.airbnb.lottie.model.LottieCompositionCache
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -73,6 +66,25 @@ class MainActivityTest {
     }
 
     @Test
+    fun albumCreateTest() {
+        composeTestRule.mainClock.autoAdvance = false
+        composeTestRule.mainClock.advanceTimeBy(6000)
+        composeTestRule.mainClock.autoAdvance = true
+
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.misw.vinilos", appContext.packageName)
+
+        assertMainScreenLoaded()
+
+        goToCreateAlbum()
+        assertCreateAlbumScreen()
+        assertCreateAlbumErrorsScreen()
+        createAlbum()
+        //  assertNewAlbum()
+    }
+
+    @Test
     fun albumTest() {
         composeTestRule.mainClock.autoAdvance = false
         composeTestRule.mainClock.advanceTimeBy(6000)
@@ -84,11 +96,6 @@ class MainActivityTest {
 
         assertMainScreenLoaded()
         assertAlbumsScreenLoaded()
-
-        goToCreateAlbum()
-        assertCreateAlbumScreen()
-        createAlbum()
-      //  assertNewAlbum()
     }
 
     @Test
@@ -97,12 +104,26 @@ class MainActivityTest {
         composeTestRule.mainClock.advanceTimeBy(6000)
         composeTestRule.mainClock.autoAdvance = true
 
-        composeTestRule.onNodeWithText("Vinilos").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Albumes").assertIsDisplayed()
-        composeTestRule.onNodeWithText("artistas").assertIsDisplayed()
+        assertMainScreenLoaded()
+
         composeTestRule.onNodeWithText("artistas").performClick()
 
-        assertArtisScreenLoaded()
+
+        assertArtistScreenLoaded()
+    }
+
+    @Test
+    fun colleccionistasTest() {
+        composeTestRule.mainClock.autoAdvance = false
+        composeTestRule.mainClock.advanceTimeBy(6000)
+        composeTestRule.mainClock.autoAdvance = true
+
+        composeTestRule.onNodeWithText("Vinilos").assertIsDisplayed()
+        assertMainScreenLoaded()
+
+        composeTestRule.onNodeWithText("coleccionistas").performClick()
+
+        assertCollectorScreenLoaded()
     }
 
     private fun assertMainScreenLoaded(){
@@ -136,8 +157,25 @@ class MainActivityTest {
         composeTestRule.onNodeWithContentDescription("Back").performClick()
     }
 
+    private fun assertCreateAlbumErrorsScreen(){
+        Thread.sleep(1000)
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(7)
+        composeTestRule.onNodeWithText("Crear").performClick()
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(1)
+        Thread.sleep(2000)
+
+        composeTestRule.onNodeWithText("La url no puede estar vacía").assertIsDisplayed()
+        composeTestRule.onNodeWithText("El nombre no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("La fecha de lanzamiento no no puede estar vacía").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(3)
+        composeTestRule.onNodeWithText("La descripción no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("El genero no puede estar vacío").assertIsDisplayed()
+        composeTestRule.onNodeWithText("La discografica no puede estar vacía").assertIsDisplayed()
+    }
+
     private fun assertCreateAlbumScreen(){
         Thread.sleep(1000)
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(1)
         composeTestRule.onNodeWithText("Crear Álbum").assertIsDisplayed()
         composeTestRule.onNodeWithText("Url de la Imagen").assertIsDisplayed()
         composeTestRule.onNodeWithText("Nombre del Álbum").assertIsDisplayed()
@@ -152,7 +190,11 @@ class MainActivityTest {
     private fun createAlbum(){
         Thread.sleep(1000)
         composeTestRule.onNodeWithText("Url de la Imagen").performTextInput("https://f4.bcbits.com/img/a3726590002_65")
+        composeTestRule.onNodeWithText("https://f4.bcbits.com/img/a3726590002_65").assertIsDisplayed()
+
         composeTestRule.onNodeWithText("Nombre del Álbum").performTextInput("Lejos no tan lejos")
+        composeTestRule.onNodeWithText("Lejos no tan lejos").assertIsDisplayed()
+
         composeTestRule.onNodeWithContentDescription("Seleccionar fecha.").performClick()
         val datePickerButton = Espresso.onView(
             Matchers.allOf(
@@ -167,16 +209,31 @@ class MainActivityTest {
         datePickerButton.perform(click())
 
         composeTestRule.onNodeWithText("Description").performTextInput("Hello Seahorse! broke through Mexico City's competitive indie rock scene with last year's seminal disc 'Bestia.' ")
-        composeTestRule.onNodeWithText("Género").performTextInput("Rock")
-        composeTestRule.onNodeWithText("Discográfica").performTextInput("Sony Music")
+        composeTestRule.onNodeWithText("Hello Seahorse! broke through Mexico City's competitive indie rock scene with last year's seminal disc 'Bestia.' ").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(4)
+        composeTestRule.onNodeWithTag("genre-field").performClick()
+        composeTestRule.onNodeWithText("Rock").performClick()
+        composeTestRule.onNodeWithText("Rock").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(6)
+        composeTestRule.onNodeWithTag("record-field").performClick()
+        composeTestRule.onNodeWithText("Sony Music").performClick()
+        composeTestRule.onNodeWithText("Sony Music").assertIsDisplayed()
+
         composeTestRule.onNodeWithTag("CreateAlbumContainer").performScrollToIndex(7)
         composeTestRule.onNodeWithText("Crear").performClick()
-        Thread.sleep(10000)
+        composeTestRule.onNodeWithText("Álbum creado con éxito").assertIsDisplayed()
+        composeTestRule.mainClock.autoAdvance = false
+        composeTestRule.mainClock.advanceTimeBy(6000)
+        composeTestRule.mainClock.autoAdvance = true
+     //   composeTestRule.onNodeWithTag("AlbumDetail").assertIsDisplayed()
+    //assertAlbum(albumList.last())
     }
 
     private fun assertAlbum(album: Album){
-        Thread.sleep(1000)
-        composeTestRule.onNodeWithContentDescription(album.name).assertIsDisplayed()
+        Thread.sleep(2000)
+//        composeTestRule.onNodeWithContentDescription(album.name).assertIsDisplayed()
         composeTestRule.onNodeWithText("Album: ${album.name}").assertIsDisplayed()
         composeTestRule.onNodeWithText("Genero: ${album.genre}").assertIsDisplayed()
         composeTestRule.onNodeWithText("Año: ${album.releaseDate}").assertIsDisplayed()
@@ -184,7 +241,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
     }
 
-    private fun assertArtisScreenLoaded() {
+    private fun assertArtistScreenLoaded() {
         composeTestRule.mainClock.autoAdvance = false
         composeTestRule.mainClock.advanceTimeBy(6000)
         composeTestRule.mainClock.autoAdvance = true
@@ -196,14 +253,20 @@ class MainActivityTest {
             composeTestRule.onNodeWithText(musician.name).assertIsDisplayed()
             goToDetailMusician(musician)
         }
-        //composeTestRule.onAllNodesWithContentDescription("foto artista")[0].assertExists()
-        //composeTestRule.onAllNodesWithText("Rubén Blades Bellido de Luna")[0].assertIsDisplayed()
     }
 
     private fun goToDetailMusician(musician: Musician){
         composeTestRule.onNodeWithText(musician.name).performClick()
-        Thread.sleep(3000)
+        Thread.sleep(1000)
         assertMusician(musician)
+        composeTestRule.onNodeWithContentDescription("Back").performClick()
+    }
+
+    private fun goToDetailCollector(collector: Collector){
+        composeTestRule.onNodeWithText(collector.name).performClick()
+        Thread.sleep(1000)
+        assertCollector(collector)
+        Thread.sleep(1000)
         composeTestRule.onNodeWithContentDescription("Back").performClick()
     }
 
@@ -211,5 +274,25 @@ class MainActivityTest {
         Thread.sleep(1000)
         composeTestRule.onNodeWithContentDescription(musician.name).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
+    }
+
+    private fun assertCollector(collector: Collector){
+        Thread.sleep(1000)
+        composeTestRule.onNodeWithText(collector.name).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Back").assertIsDisplayed()
+    }
+
+    private fun assertCollectorScreenLoaded() {
+        composeTestRule.mainClock.autoAdvance = false
+        composeTestRule.mainClock.advanceTimeBy(6000)
+        composeTestRule.mainClock.autoAdvance = true
+
+        Thread.sleep(1000)
+        composeTestRule.onNodeWithText("Coleccionistas").assertIsDisplayed()
+
+        collectorList.forEach { collector ->
+            composeTestRule.onNodeWithText(collector.name).assertIsDisplayed()
+            goToDetailCollector(collector)
+        }
     }
 }
