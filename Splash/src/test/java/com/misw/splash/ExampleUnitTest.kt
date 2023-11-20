@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.splash
 
 import org.junit.Test
 

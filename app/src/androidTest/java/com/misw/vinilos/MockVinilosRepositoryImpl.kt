@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-private val albumList = listOf(
+val albumList = mutableListOf(
     Album(
+        id = 1,
         name = "Buscando América",
         cover = "https://f4.bcbits.com/img/a3726590002_65",
         releaseDate = "2014-01-01",
@@ -20,6 +21,7 @@ private val albumList = listOf(
         recordLabel = "Album record label",
     ),
     Album(
+        id = 2,
         name = "Album name",
         cover = "https://f4.bcbits.com/img/a3726590002_65",
         releaseDate = "2021-01-01",
@@ -28,6 +30,7 @@ private val albumList = listOf(
         recordLabel = "Album record label",
     ),
     Album(
+        id = 3,
         name = "Interstellar",
         cover = "https://f4.bcbits.com/img/a3726590002_65",
         releaseDate = "2014-01-01",
@@ -37,28 +40,43 @@ private val albumList = listOf(
     ),
 )
 
-private val musicianList = listOf(
+val musicianList = listOf(
     Musician(
-        id = "1",
+        id = 1,
         name = "Hans Zimmer",
         image = "https://f4.bcbits.com/img/a3726590002_65",
-        birthDate = "1957-01-01",
+        birthDate = "1943-12-27T05:00:00.000Z",
         description = "Musician description",
     ),
     Musician(
-        id = "2",
+        id = 2,
         name = "Rubén Blades Bellido de Luna",
         image = "https://f4.bcbits.com/img/a3726590002_65",
-        birthDate = "1957-01-01",
+        birthDate = "1943-12-27T05:00:00.000Z",
         description = "Musician description",
     ),
     Musician(
-        id = "2",
+        id = 3,
         name = "Ludwig Göransson",
         image = "https://f4.bcbits.com/img/a3726590002_65",
-        birthDate = "1984-01-01",
+        birthDate = "1943-12-27T05:00:00.000Z",
         description = "Musician description",
     ),
+)
+
+val collectorList = listOf(
+    Collector(
+        name = "Jaime Andrés Monsalve",
+        telephone=  "3102178976",
+        email= "j.monsalve@gmail.com",
+        id =  1
+    ),
+    Collector(
+        name= "María Alejandra Palacios",
+        telephone = "3502889087",
+        email= "j.palacios@outlook.es",
+        id =  2
+    )
 )
 
 class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
@@ -70,7 +88,9 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
 
     override fun createAlbum(album: Album): Flow<Album> {
         return flow {
-            emit(album)
+            val newAlbum = album.copy(id = 3)
+            albumList.add(newAlbum)
+            emit(newAlbum)
         }
     }
 
@@ -82,20 +102,37 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
 
     override suspend fun getCollectors(): Flow<List<Collector>> {
         return flow {
-            emit(emptyList())
+            emit(collectorList)
         }
     }
 
     override fun getAlbum(albumId: Int?): Flow<Album> {
         return flow {
-            emit(Album(
-                name = "Interstellar",
-                cover = "https://f4.bcbits.com/img/a3726590002_65",
-                releaseDate = "2014-01-01",
-                description = "Album description",
-                genre = "Album genre",
-                recordLabel = "Album record label",
-            ),)
+            emit(
+                albumList.first { album ->
+                    album.id == albumId
+                                },
+            )
+        }
+    }
+
+    override fun getCollector(collectorId: Int?): Flow<Collector> {
+        return flow {
+            emit(
+                collectorList.first { collector ->
+                    collector.id == collectorId
+                }
+            )
+        }
+    }
+
+    override fun getMusician(musicianId: Int?): Flow<Musician> {
+        return flow {
+            emit(
+                musicianList.first { musician ->
+                    musician.id == musicianId
+                }
+            )
         }
     }
 

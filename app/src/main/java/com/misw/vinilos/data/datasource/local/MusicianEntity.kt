@@ -7,7 +7,7 @@ import com.misw.vinilos.data.model.Musician
 
 @Entity
 data class MusicianEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: Int?,
     @ColumnInfo(name ="name")val name: String,
     @ColumnInfo(name ="image")val image: String,
     @ColumnInfo(name ="description")val description: String,

@@ -3,7 +3,6 @@ package com.misw.vinilos.ui.collector
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
@@ -12,13 +11,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-
+import com.misw.vinilos.R.string
+import com.misw.vinilos.Routes
 import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Collector
@@ -36,7 +37,7 @@ fun CollectorListScreen(collectorList: List<Collector>) {
     ){
         item {
             Text(
-                text = "Coleccionistas",
+                text = stringResource(string.collectors),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
@@ -49,9 +50,10 @@ fun CollectorListScreen(collectorList: List<Collector>) {
             CollectorItemView(
                 collector=collector,
                 onCollectorSelected = {
-                    //viewModel?.setEvent(VinilosEvent.NavigateTo(Routes.CollectorDetail.path.replace("{collectorId}",collector.id.toString())))
+                    viewModel?.setEvent(VinilosEvent.NavigateTo(
+                        Routes.CollectorDetail.path.replace("{collectorId}",collector.id.toString())))
                 }
-                )
+            )
             Divider(color = Color.Black)
         }
     }

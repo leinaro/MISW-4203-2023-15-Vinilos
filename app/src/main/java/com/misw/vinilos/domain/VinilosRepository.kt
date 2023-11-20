@@ -3,7 +3,6 @@ package com.misw.vinilos.domain
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
-import com.misw.vinilos.data.repository.NetworkStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -14,6 +13,8 @@ interface VinilosRepository {
     suspend fun getCollectors(): Flow<List<Collector>>
 
     fun getAlbum(albumId: Int?): Flow<Album>
+    fun getCollector(collectorId: Int?): Flow<Collector>
+    fun getMusician(musicianId: Int?): Flow<Musician>
 
     val isRefreshing: StateFlow<Boolean>
     val isInternetAvailable: StateFlow<Boolean>

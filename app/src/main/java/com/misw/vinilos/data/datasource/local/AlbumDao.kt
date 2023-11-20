@@ -14,8 +14,8 @@ interface AlbumDao {
     suspend fun insert(albumEntityList: List<AlbumEntity>)
 
     @Query("SELECT * FROM albumentity WHERE id = :albumId")
-    suspend fun getAlbum(albumId: Int?): AlbumEntity
+    suspend fun get(albumId: Int?): AlbumEntity
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAlbum(albumEntity: AlbumEntity)
+    suspend fun insert(albumEntity: AlbumEntity)
 }

@@ -10,20 +10,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.R.string
 import com.misw.vinilos.data.model.Musician
 
 @Composable
-fun  MusicianListScreen(musicianList : List<Musician>){
+fun  MusicianListScreen(musicianList : List<Musician>, navController: NavController){
     LazyVerticalGrid(columns = GridCells.Fixed(2),modifier = Modifier.padding(24.dp)) {
         item(span = { GridItemSpan(currentLineSpan = 2) }){
-            Text(text = "Artistas", fontWeight= FontWeight.Bold, color=MaterialTheme.colorScheme.primary, fontSize = 24.sp, modifier=Modifier.fillMaxWidth())
+            Text(text = stringResource(string.artists), fontWeight= FontWeight.Bold, color=MaterialTheme.colorScheme.primary, fontSize = 24.sp, modifier=Modifier.fillMaxWidth())
         }
         items(items = musicianList){ musician ->
-            musicianItemView(musician)
+            musicianItemView(musician, navController)
         }
     }
 }
@@ -32,15 +36,17 @@ fun  MusicianListScreen(musicianList : List<Musician>){
 @Composable
 @Preview(showBackground = true)
 fun MusicianListScreenPreview (){
-    MusicianListScreen(musicianList = listOf(Musician("1",
+    MusicianListScreen(musicianList = listOf(Musician(1,
         "Rubén Blades Bellido de Luna",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "Es un cantante, compositor, músico, actor, abogado, político y activista panameño. Ha desarrollado gran parte de su carrera artística en la ciudad de Nueva York.",
         "1948-07-16T00:00:00-05:00"
-    ),Musician("2",
+    ),Musician(2,
         "shakira",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Ruben_Blades_by_Gage_Skidmore.jpg/800px-Ruben_Blades_by_Gage_Skidmore.jpg",
         "kajshdñlkjahskldjhaklñjs",
         "1948-07-16T00:00:00-05:00"
-    )))
+    )),
+        navController = rememberNavController()
+    )
 }

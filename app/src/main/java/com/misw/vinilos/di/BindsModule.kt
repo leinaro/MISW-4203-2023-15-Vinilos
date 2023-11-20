@@ -1,4 +1,4 @@
-package com.misw.vinilos
+package com.misw.vinilos.di
 
 import com.misw.vinilos.data.repository.NetworkConnectivityService
 import com.misw.vinilos.data.repository.NetworkConnectivityServiceImpl

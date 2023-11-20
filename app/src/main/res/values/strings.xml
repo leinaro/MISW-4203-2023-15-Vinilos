@@ -1,3 +1,26 @@
 <resources>
   <string name="app_name">Vinilos</string>
+  <string name="empty_url">La url no puede estar vacía</string>
+  <string name="empty_name">El nombre no puede estar vacío</string>
+  <string name="empty_date">La fecha de lanzamiento no no puede estar vacía</string>
+  <string name="empty_desc">La descripción no puede estar vacío</string>
+  <string name="empty_genre">El genero no puede estar vacío</string>
+  <string name="empty_record">La discografica no puede estar vacía</string>
+  <string name="create_album">Crear Álbum</string>
+  <string name="default_image">Imagen por defecto</string>
+  <string name="image_url">Url de la Imagen</string>
+  <string name="album_name">Nombre del Álbum</string>
+  <string name="release_date">Fecha de lanzamiento</string>
+  <string name="select_date">Seleccionar fecha.</string>
+  <string name="description">Description</string>
+  <string name="genre">Género</string>
+  <string name="record_label">Discográfica</string>
+  <string name="create">Crear</string>
+  <string name="albums">Albumes</string>
+  <string name="collectors">Coleccionistas</string>
+  <string name="authors">Andres Soler, Dario Rios, Emmanuel Rodriguez, Ines Rojas</string>
+  <string name="no_internet_mode">Estás en modo ermitaño digital. Sin internet.</string>
+  <string name="close">cerrar</string>
+  <string name="add_new">Agregar nuevo.</string>
+  <string name="artists">Artistas</string>
 </resources>

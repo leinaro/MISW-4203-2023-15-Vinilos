@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.misw.vinilos.data.model.Album
-import com.misw.vinilos.data.model.Collector
 
 @Entity
 data class AlbumEntity(

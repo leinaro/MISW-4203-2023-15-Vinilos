@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -43,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -51,9 +51,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.misw.splash.SplashScreen
+import com.misw.vinilos.R.string
+import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
-import com.misw.vinilos.data.model.Album
-import com.misw.vinilos.data.model.Collector
+import com.misw.vinilos.VinilosEvent.NavigateTo
+import com.misw.vinilos.VinilosEvent.ShowError
 import com.misw.vinilos.ui.VinilosInfoDialog
 import com.misw.vinilos.ui.VinilosNavigationBar
 import com.misw.vinilos.ui.VinilosTopAppBar
@@ -62,6 +65,7 @@ import com.misw.vinilos.ui.album.AlbumDetail
 import com.misw.vinilos.ui.album.AlbumsList
 import com.misw.vinilos.ui.collector.CollectorDetailScreen
 import com.misw.vinilos.ui.collector.CollectorListScreen
+import com.misw.vinilos.ui.musician.MusicianDetail
 import com.misw.vinilos.ui.musician.MusicianListScreen
 import com.misw.vinilos.ui.theme.VinilosTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -115,7 +119,7 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     modifier = Modifier.padding(4.dp),
-                                    text="Estás en modo ermitaño digital. Sin internet.",
+                                    text= getString(string.no_internet_mode),
                                     color = MaterialTheme.colorScheme.surfaceTint,
                                 )
                                 Icon(
@@ -126,24 +130,27 @@ class MainActivity : ComponentActivity() {
                                             offlineBannerVisible = false
                                         },
                                     imageVector = Icons.Filled.Close,
-                                    contentDescription = "cerrar",
+                                    contentDescription = getString(string.close),
                                 )
                             }
                         }
-                        MainScreen(
-                            state = state,
-                            event = event,
-                            isRefreshing = isRefreshing,
-                            onRefresh = {
-                                viewModel.getAllInformation()
-                            },
-                            createAlbum = { album ->
-                                viewModel.createAlbum(album)
-                            },
-                            albumDetail = { albumId ->
-                                viewModel.getAlbum(albumId)
-                            }
-                        )
+                        var showSplash by remember { mutableStateOf(true) }
+                        if (showSplash){
+                            SplashScreen(
+                                navigateToHome = {
+                                    showSplash = false
+                                }
+                            )
+                        } else {
+                            MainScreen(
+                                state = state,
+                                event = event,
+                                isRefreshing = isRefreshing,
+                                onRefresh = {
+                                    viewModel.getAllInformation()
+                                },
+                            )
+                        }
                     }
                 }
             }
@@ -151,20 +158,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MainScreen(
-    modifier: Modifier = Modifier,
     state: VinilosViewState,
-    event: VinilosEvent = VinilosEvent.Idle,
+    event: VinilosEvent = Idle,
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {},
-    createAlbum: (Album) -> Unit = {},
-    albumDetail: (Int) -> Unit = {},
-    getCollector: (Int) -> Collector? = {_-> null },
 ) {
     val navController = rememberNavController()
-
     var selectedItem by remember { mutableIntStateOf(0) }
     val items = listOf("albums", "artists", "collectors")
     val snackbarHostState = remember { SnackbarHostState() }
@@ -177,26 +179,12 @@ fun MainScreen(
         onRefresh = onRefresh
     )
 
-    LaunchedEffect(key1 = event){
-        when(event){
-            is NavigateBack -> {
-                navController.navigateUp()
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.ShowError -> {
-                //showSnackBar(event.message)
-            }
-            is VinilosEvent.Idle -> Unit
-        }
-    }
-
-    LaunchedEffect(key1 = state.error){
-        if (state.error == null) return@LaunchedEffect
+    fun showSnackBar(message: String){
         try {
             scope.launch {
                 val result = snackbarHostState.showSnackbar(
                     visuals = SnackbarVisualsWithError(
-                        message = state.error,
+                        message = message,
                         isError = true,
                     ),
                 )
@@ -214,27 +202,45 @@ fun MainScreen(
         }
     }
 
+    LaunchedEffect(key1 = event){
+        when(event){
+            is NavigateBack -> {
+                navController.navigateUp()
+            }
+            is ShowError -> {
+                showSnackBar(event.message)
+            }
+            is VinilosEvent.ShowSuccess -> {
+                showSnackBar(event.message)
+            }
+            is Idle -> Unit
+            is NavigateTo -> {
+                navController.navigate(event.route)
+            }
+        }
+    }
+
     Scaffold(
         floatingActionButton = {
             when (currentBackStackEntry?.destination?.route){
                 "albums" -> FloatingActionButton(
                     onClick = {
-                        navController.navigate("albums-create")
+                        navController.navigate(Routes.AlbumsCreate.path)
                     },
                 ) {
-                    Icon(Icons.Filled.Add, "Agregar nuevo.")
+                    Icon(Icons.Filled.Add, stringResource(string.add_new))
                 }
             }
         },
         topBar = {
             VinilosTopAppBar(
+                navController = navController,
                 onInfoActionClick = {
                     isInfoDialogVisible = true
                 }
             )
         },
         snackbarHost = {
-            //
         },
         bottomBar = {
             VinilosNavigationBar(
@@ -246,53 +252,52 @@ fun MainScreen(
             )
         },
     ) { paddingValues ->
-        Box(modifier = modifier
+        Box(modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
         ){
             NavHost(
                 navController = navController,
-                startDestination = "albums",
+                startDestination = Routes.Albums.path,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
-                composable("albums") {
-                    AlbumsList(albums = state.albums, navController = navController)
-                }
-                composable("albums-create"){
-                    AlbumCreate(
-                        onCreateAlbumClick = createAlbum
+                composable(Routes.Albums.path) {
+                    AlbumsList(
+                        albums = state.albums,
                     )
                 }
-                composable("artists") {
-                    MusicianListScreen(musicianList = state.musicians)
+                composable(Routes.AlbumsCreate.path){
+                    AlbumCreate()
                 }
-                composable("collectors") {
+                composable(Routes.Artists.path) {
+                    MusicianListScreen(musicianList = state.musicians, navController = navController)
+                }
+                composable(Routes.Collectors.path) {
                     CollectorListScreen(
                         collectorList = state.collectors
                     )
                 }
                 composable(
-                    route = "collector-detail",
+                    route = Routes.CollectorDetail.path,
                     arguments = listOf(
                         navArgument("collectorId") { type = NavType.IntType }
                     )
                 ) { backStackEntry ->
                     val collectorId = backStackEntry.arguments?.getInt("collectorId")
-                    val collector = getCollector(collectorId ?: -1)
                     CollectorDetailScreen(
-                        collector = null
+                        collectorId = collectorId
                     )
                 }
-                composable("album/{albumId}") { backStackEntry ->
+                composable(Routes.AlbumDetail.path) { backStackEntry ->
                     val albumId = backStackEntry.arguments?.getString("albumId")?.toIntOrNull()
-                    LaunchedEffect(key1 = albumId){
-                        if (albumId == null) return@LaunchedEffect
-                        albumDetail(albumId)
-                    }
-                    AlbumDetail(album = state.album)
+                    AlbumDetail(albumId = albumId)
+                }
+                composable(Routes.ArtistDetail.path) { backStackEntry ->
+                    val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
+                    MusicianDetail(musicianId = musicianId)
                 }
             }
 

@@ -1,6 +1,6 @@
 package com.misw.vinilos
 
-import com.misw.vinilos.data.repository.VinilosRepositoryImpl
+import com.misw.vinilos.di.BindsModule
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.Binds
 import dagger.Module
