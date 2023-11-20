@@ -11,12 +11,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import com.misw.vinilos.R.string
 import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album
@@ -36,7 +38,7 @@ fun AlbumsList(
     ) {
         item(span = { GridItemSpan(2) }) {
             Text(
-                text = "Albumes",
+                text = stringResource(string.albums),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,

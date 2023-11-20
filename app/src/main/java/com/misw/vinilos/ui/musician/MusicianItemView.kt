@@ -43,7 +43,7 @@ fun musicianItemView(musician: Musician, navController: NavController) {
         ) {
         Image(
             painter = painter,
-            contentDescription = "foto artista",
+            contentDescription = musician.name,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(shape = RoundedCornerShape(16.dp)),

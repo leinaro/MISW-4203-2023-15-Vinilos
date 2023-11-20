@@ -10,19 +10,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.R.string
 import com.misw.vinilos.data.model.Musician
 
 @Composable
 fun  MusicianListScreen(musicianList : List<Musician>, navController: NavController){
     LazyVerticalGrid(columns = GridCells.Fixed(2),modifier = Modifier.padding(24.dp)) {
         item(span = { GridItemSpan(currentLineSpan = 2) }){
-            Text(text = "Artistas", fontWeight= FontWeight.Bold, color=MaterialTheme.colorScheme.primary, fontSize = 24.sp, modifier=Modifier.fillMaxWidth())
+            Text(text = stringResource(string.artists), fontWeight= FontWeight.Bold, color=MaterialTheme.colorScheme.primary, fontSize = 24.sp, modifier=Modifier.fillMaxWidth())
         }
         items(items = musicianList){ musician ->
             musicianItemView(musician, navController)

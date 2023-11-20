@@ -17,11 +17,3 @@ fun Collector.toEntity() = CollectorEntity(
     email = email,
     )
 
-/*
-{
-    "name": "Jaime Andrés Monsalve",
-    "telephone": "3102178976",
-    "email": "j.monsalve@gmail.com",
-    "id": 2
-}
-*/

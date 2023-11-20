@@ -31,9 +31,9 @@ import java.util.Locale
 @Composable
 fun MusicianDetail(musicianId: Int?) {
     val composeView = LocalView.current
-    val viewModel = composeView.findViewTreeViewModelStoreOwner()?.let {
-        hiltViewModel<VinilosViewModel>(it)
-    } ?: hiltViewModel<VinilosViewModel>()
+    val viewModel: VinilosViewModel = composeView.findViewTreeViewModelStoreOwner()?.let {
+        hiltViewModel(it)
+    } ?: hiltViewModel()
 
     val state by viewModel.state.collectAsState()
 

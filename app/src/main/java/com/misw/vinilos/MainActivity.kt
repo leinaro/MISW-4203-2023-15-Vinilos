@@ -42,6 +42,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
@@ -51,6 +52,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.misw.splash.SplashScreen
+import com.misw.vinilos.R.string
 import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
 import com.misw.vinilos.VinilosEvent.NavigateTo
@@ -117,7 +119,7 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 Text(
                                     modifier = Modifier.padding(4.dp),
-                                    text="Estás en modo ermitaño digital. Sin internet.",
+                                    text= getString(string.no_internet_mode),
                                     color = MaterialTheme.colorScheme.surfaceTint,
                                 )
                                 Icon(
@@ -128,7 +130,7 @@ class MainActivity : ComponentActivity() {
                                             offlineBannerVisible = false
                                         },
                                     imageVector = Icons.Filled.Close,
-                                    contentDescription = "cerrar",
+                                    contentDescription = getString(string.close),
                                 )
                             }
                         }
@@ -226,7 +228,7 @@ fun MainScreen(
                         navController.navigate(Routes.AlbumsCreate.path)
                     },
                 ) {
-                    Icon(Icons.Filled.Add, "Agregar nuevo.")
+                    Icon(Icons.Filled.Add, stringResource(string.add_new))
                 }
             }
         },
