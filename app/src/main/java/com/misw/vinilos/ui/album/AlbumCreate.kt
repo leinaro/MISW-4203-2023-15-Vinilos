@@ -1,7 +1,6 @@
 package com.misw.vinilos.ui.album
 
 import android.app.DatePickerDialog
-import android.util.Log
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -32,17 +30,16 @@ import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import com.misw.vinilos.VinilosEvent.ShowError
+import com.misw.vinilos.R.string
 import com.misw.vinilos.VinilosViewModel
 import com.misw.vinilos.data.model.Album
-import com.misw.vinilos.data.repository.UIError
-import java.text.SimpleDateFormat
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,20 +52,20 @@ fun AlbumCreate() {
     var imagePath by remember { mutableStateOf("") }
     var albumName by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
-    var generoName by remember { mutableStateOf("") }
+    var genreName by remember { mutableStateOf("") }
     var recordLabel by remember { mutableStateOf("") }
 
     val defaultImage = ColorPainter(color = Color.Gray)
     val context = LocalContext.current
     var selectedDateText by rememberSaveable { mutableStateOf("") }
     val calendar = Calendar.getInstance()
-    var year by rememberSaveable {
+    val year by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.YEAR])
     }
-    var month by rememberSaveable {
+    val month by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.MONTH])
     }
-    var dayOfMonth by rememberSaveable {
+    val dayOfMonth by rememberSaveable {
         mutableIntStateOf(calendar[Calendar.DAY_OF_MONTH])
     }
     val datePicker = DatePickerDialog(
@@ -87,7 +84,7 @@ fun AlbumCreate() {
 
     fun validateUrl(url: String):Boolean {
         urlError = if (url.isEmpty()) {
-            "La url no puede estar vacía"
+            context.getString(string.empty_url)
         } else {
             ""
         }
@@ -95,7 +92,7 @@ fun AlbumCreate() {
     }
     fun validateName(name: String):Boolean {
         nameError = if (name.isEmpty()) {
-            "El nombre no puede estar vacío"
+            context.getString(string.empty_name)
         } else {
             ""
         }
@@ -103,7 +100,7 @@ fun AlbumCreate() {
     }
     fun validateReleaseDate(date: String):Boolean {
         releaseDateError = if (date.isEmpty()) {
-            "La fecha de lanzamiento no no puede estar vacía"
+            context.getString(string.empty_date)
         } else {
             ""
         }
@@ -111,7 +108,7 @@ fun AlbumCreate() {
     }
     fun validateDescription(desc: String):Boolean {
         descriptionError = if (desc.isEmpty()) {
-            "La descripción no puede estar vacío"
+            context.getString(string.empty_desc)
         } else {
             ""
         }
@@ -119,7 +116,7 @@ fun AlbumCreate() {
     }
     fun validateGenre(genre: String):Boolean {
         genreError = if (genre.isEmpty()) {
-            "El genero no puede estar vacío"
+            context.getString(string.empty_genre)
         } else {
             ""
         }
@@ -128,7 +125,7 @@ fun AlbumCreate() {
 
     fun validateRecordLabel(record: String):Boolean {
         recordLabelError = if (record.isEmpty()) {
-            "La discografica no puede estar vacía"
+            context.getString(string.empty_record)
         } else {
             ""
         }
@@ -143,7 +140,7 @@ fun AlbumCreate() {
     ) {
         item {
             Text(
-                text = "Crear Álbum",
+                text = stringResource(string.create_album),
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
@@ -158,19 +155,19 @@ fun AlbumCreate() {
             ) {
                 Image(
                     painter = defaultImage,
-                    contentDescription = "Imagen por defecto",
+                    contentDescription = stringResource(string.default_image),
                     modifier = Modifier.size(85.dp)
                 )
                 OutlinedTextField(
                     value = imagePath,
                     isError = urlError.isNotEmpty(),
                     onValueChange = { imagePath = it },
-                    label = { Text("Url de la Imagen") },
+                    label = { Text(stringResource(string.image_url)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),
                     supportingText = if (urlError.isNotEmpty()) {
-                        ErrorMessage(urlError)
+                        errorMessage(urlError)
                     } else {
                         null
                     },
@@ -186,10 +183,10 @@ fun AlbumCreate() {
                     albumName = it
                     validateName(it)
                 },
-                label = { Text("Nombre del Álbum") },
+                label = { Text(stringResource(string.album_name)) },
                 modifier = Modifier.fillMaxWidth(),
                 supportingText = if (nameError.isNotEmpty()) {
-                    ErrorMessage(nameError)
+                    errorMessage(nameError)
                 } else {
                     null
                 },
@@ -202,13 +199,13 @@ fun AlbumCreate() {
                 value = selectedDateText,
                 isError = releaseDateError.isNotEmpty(),
                 onValueChange = { selectedDateText = it },
-                label = { Text("Fecha de lanzamiento") },
+                label = { Text(stringResource(string.release_date)) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 trailingIcon = {
                     Icon(
                         imageVector = Filled.DateRange,
-                        contentDescription = "Seleccionar fecha.",
+                        contentDescription = stringResource(string.select_date),
                         modifier = Modifier.clickable {
                             datePicker.show()
                         },
@@ -216,7 +213,7 @@ fun AlbumCreate() {
                 },
                 readOnly = true,
                 supportingText = if (releaseDateError.isNotEmpty()) {
-                    ErrorMessage(releaseDateError)
+                    errorMessage(releaseDateError)
                 } else {
                     null
                 },
@@ -228,11 +225,11 @@ fun AlbumCreate() {
                 value = description,
                 isError = descriptionError.isNotEmpty(),
                 onValueChange = { description = it },
-                label = { Text("Description") },
+                label = { Text(stringResource(string.description)) },
                 modifier = Modifier
                     .fillMaxWidth(),
                 supportingText = if (descriptionError.isNotEmpty()) {
-                    ErrorMessage(descriptionError)
+                    errorMessage(descriptionError)
                 } else {
                     null
                 }
@@ -249,16 +246,16 @@ fun AlbumCreate() {
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = generoName,
+                    value = genreName,
                     isError = genreError.isNotEmpty(),
-                    onValueChange = { generoName = it },
-                    label = { Text("Género") },
+                    onValueChange = { genreName = it },
+                    label = { Text(stringResource(string.genre)) },
                     modifier = Modifier
                         .testTag("genre-field")
                         .fillMaxWidth()
                         .menuAnchor(),
                     supportingText = if (genreError.isNotEmpty()) {
-                        ErrorMessage(genreError)
+                        errorMessage(genreError)
                     } else {
                         null
                     },
@@ -277,7 +274,7 @@ fun AlbumCreate() {
                     options.forEach { selectionOption ->
                         DropdownMenuItem(
                             onClick = {
-                                generoName = selectionOption
+                                genreName = selectionOption
                                 expanded = false
                             },
                             text = {
@@ -301,13 +298,13 @@ fun AlbumCreate() {
                     value = recordLabel,
                     isError = recordLabelError.isNotEmpty(),
                     onValueChange = { recordLabel = it },
-                    label = { Text("Discográfica") },
+                    label = { Text(stringResource(string.record_label)) },
                     modifier = Modifier
                         .testTag("record-field")
                         .fillMaxWidth()
                         .menuAnchor(),
                     supportingText = if (recordLabelError.isNotEmpty()) {
-                        ErrorMessage(recordLabelError)
+                        errorMessage(recordLabelError)
                     } else {
                         null
                     },
@@ -346,7 +343,7 @@ fun AlbumCreate() {
                             validateName(albumName),
                             validateReleaseDate(selectedDateText),
                             validateDescription(description),
-                            validateGenre(generoName),
+                            validateGenre(genreName),
                             validateRecordLabel(recordLabel),
                         ).contains(false)){
                         return@Button
@@ -357,7 +354,7 @@ fun AlbumCreate() {
                         cover = imagePath,
                         releaseDate = selectedDateText,
                         description = description,
-                        genre = generoName,
+                        genre = genreName,
                         recordLabel = recordLabel
                     )
                     viewModel?.createAlbum(album)
@@ -368,7 +365,7 @@ fun AlbumCreate() {
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Crear",
+                    text = stringResource(string.create),
                 )
             }
         }
@@ -381,6 +378,6 @@ fun AlbumCreatePreview() {
     AlbumCreate()
 }
 
-fun ErrorMessage(message: String) =  @Composable {
+fun errorMessage(message: String) =  @Composable {
     Text(message)
 }

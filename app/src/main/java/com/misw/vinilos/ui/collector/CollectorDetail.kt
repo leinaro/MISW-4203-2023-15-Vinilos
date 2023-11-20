@@ -1,6 +1,5 @@
 package com.misw.vinilos.ui.collector
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -14,9 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
-import com.misw.vinilos.VinilosEvent
 import com.misw.vinilos.VinilosViewModel
-import com.misw.vinilos.data.model.Collector
 
 @Composable
 fun CollectorDetailScreen(

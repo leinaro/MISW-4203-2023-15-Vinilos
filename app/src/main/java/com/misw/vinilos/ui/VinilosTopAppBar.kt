@@ -16,13 +16,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.misw.vinilos.Routes
 import com.misw.vinilos.ui.theme.VinilosTheme
-import okhttp3.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

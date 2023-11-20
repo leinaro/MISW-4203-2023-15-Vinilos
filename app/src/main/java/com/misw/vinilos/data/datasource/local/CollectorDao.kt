@@ -3,7 +3,6 @@ package com.misw.vinilos.data.datasource.local
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.OnConflictStrategy.Companion
 import androidx.room.Query
 
 @Dao

@@ -8,10 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.misw.vinilos.R.string
 
 @Composable
 fun ConfirmationDialog(
@@ -40,7 +42,7 @@ fun ConfirmationDialog(
                     .padding(bottom = 20.dp)
                     .padding(horizontal = 16.dp),
                 style = MaterialTheme.typography.bodyMedium,
-                text = "Andres Soler, Dario Rios, Emmanuel Rodriguez, Ines Rojas",
+                text = stringResource(string.authors),
                 textAlign = TextAlign.Center,
 
                 )

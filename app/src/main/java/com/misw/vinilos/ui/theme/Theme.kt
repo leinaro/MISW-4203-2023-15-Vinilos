@@ -15,14 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
+private val darkColorScheme = darkColorScheme(
     primary = Dark_Green20,
     secondary = Dark_Green40,
     tertiary = White,
     primaryContainer = Gray80,
 )
 
-private val LightColorScheme = lightColorScheme(
+private val lightColorScheme = lightColorScheme(
     primary = Light_Green20,
     secondary = Light_Green80,
     tertiary = Green,
@@ -52,8 +52,8 @@ fun VinilosTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkColorScheme
+        else -> lightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

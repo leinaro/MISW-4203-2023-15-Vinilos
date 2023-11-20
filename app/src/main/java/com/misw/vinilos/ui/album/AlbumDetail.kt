@@ -1,6 +1,5 @@
 package com.misw.vinilos.ui.album
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,7 +30,6 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.misw.vinilos.R
 import com.misw.vinilos.VinilosViewModel
-import com.misw.vinilos.data.model.Album
 import java.text.SimpleDateFormat
 import java.util.Locale
 
