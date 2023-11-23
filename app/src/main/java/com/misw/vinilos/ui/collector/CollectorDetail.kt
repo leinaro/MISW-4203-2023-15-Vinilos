@@ -36,16 +36,16 @@ fun CollectorDetailScreen(
         modifier = Modifier.padding(24.dp),
         ) {
         Text(
-            text = "${state.collector?.name}",
+            text = "Nombre: ${state.collector?.name}",
             modifier = Modifier.padding(bottom = 8.dp),
         )
 
         Text(
-            text = "${state.collector?.email}",
+            text = "Correo electronico: ${state.collector?.email}",
             modifier = Modifier.padding(bottom = 8.dp),
             )
         Text(
-            text = "${state.collector?.telephone}",
+            text = "Celular: ${state.collector?.telephone}",
             modifier = Modifier.padding(bottom = 8.dp),
 
             )
