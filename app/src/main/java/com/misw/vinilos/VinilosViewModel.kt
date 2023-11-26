@@ -159,16 +159,9 @@ class VinilosViewModel @Inject constructor(
                     )
                 }
                 .collect { album ->
-                    Log.e("iarl", album.toString())
                     setEvent(VinilosEvent.ShowSuccess("Álbum creado con éxito"))
                     delay(1000)
                     setEvent(NavigateTo("album/${album.id}"))
-                    /*setState(
-                        state.value.copy(
-                            musicians = musicians,
-                            error = null
-                        )
-                    )*/
                 }
         }
     }
