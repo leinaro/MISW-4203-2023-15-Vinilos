@@ -38,6 +38,19 @@ class VinilosViewModelTest {
             )
         )
     }
+
+    private val albumFlow = flow {
+        emit(
+            Album(
+                name = "Album name",
+                cover = "https://f4.bcbits.com/img/a3726590002_65",
+                releaseDate = "2021-01-01",
+                description = "Album description",
+                genre = "Album genre",
+                recordLabel = "Album record label",
+            )
+        )
+    }
     private val musicianListFlow = flow {
         emit(
             listOf(

@@ -44,7 +44,6 @@ fun AlbumsList(
                 fontSize = 24.sp,
                 modifier = Modifier
                     .fillMaxWidth()
-                //.padding(bottom = 8.dp, start = 10.dp, end = 10.dp, top = 10.dp)
             )
         }
 

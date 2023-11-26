@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface VinilosRepository {
-    suspend fun getAlbums(): Flow<List<Album>>
+    fun getAlbums(): Flow<List<Album>>
     fun createAlbum(album: Album): Flow<Album>
-    suspend fun getMusicians(): Flow<List<Musician>>
-    suspend fun getCollectors(): Flow<List<Collector>>
+    fun getMusicians(): Flow<List<Musician>>
+    fun getCollectors(): Flow<List<Collector>>
 
     fun getAlbum(albumId: Int?): Flow<Album>
     fun getCollector(collectorId: Int?): Flow<Collector>

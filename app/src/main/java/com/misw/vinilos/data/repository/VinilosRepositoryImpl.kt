@@ -45,7 +45,7 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
-        override suspend fun getAlbums(): Flow<List<Album>> {
+        override fun getAlbums(): Flow<List<Album>> {
                 return flow {
                         try {
                                 _isRefreshing.value = true
@@ -79,7 +79,7 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
-        override suspend fun getMusicians(): Flow<List<Musician>> {
+        override fun getMusicians(): Flow<List<Musician>> {
                 return flow {
                         try {
                                 _isRefreshing.value = true
@@ -144,7 +144,7 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
-        override suspend fun getCollectors(): Flow<List<Collector>> {
+        override fun getCollectors(): Flow<List<Collector>> {
                 return flow {
                         try {
                                 _isRefreshing.value = true
