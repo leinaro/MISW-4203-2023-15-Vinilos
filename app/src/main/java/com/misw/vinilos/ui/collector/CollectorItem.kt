@@ -26,7 +26,9 @@ fun CollectorItemView(
 ){
     ListItem(
         modifier = Modifier
-            .clickable { onCollectorSelected(collector) },
+            .clickable(
+                onClickLabel = "Click en ${collector.name}",
+            ) { onCollectorSelected(collector) },
         headlineContent = {
             Text(
                 text = collector.name,
@@ -39,7 +41,8 @@ fun CollectorItemView(
             ){
                 Icon(
                     modifier = Modifier.padding(4.dp),
-                    imageVector = Icons.Filled.Email, contentDescription = "Email.")
+                    imageVector = Icons.Filled.Email,
+                    contentDescription = "Email ${collector.name}")
                 Text(
                     modifier = Modifier.fillMaxHeight(),
                     textAlign = TextAlign.Center,
@@ -47,7 +50,7 @@ fun CollectorItemView(
                 )
                 Icon(
                     modifier = Modifier.padding(4.dp),
-                    imageVector = Icons.Filled.Phone, contentDescription = "Phone.")
+                    imageVector = Icons.Filled.Phone, contentDescription = "Phone  ${collector.name}")
                 Text(
                     modifier = Modifier.fillMaxHeight(),
                     text = collector.telephone,

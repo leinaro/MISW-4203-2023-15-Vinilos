@@ -53,14 +53,14 @@ class MainActivityTest {
 
     @Before
     fun setup() {
-        LottieCompositionCache.getInstance().clear()
+        /*LottieCompositionCache.getInstance().clear()
         idlingResource = LottieIdlingResource()
-        IdlingRegistry.getInstance().register(idlingResource)
+        IdlingRegistry.getInstance().register(idlingResource)*/
     }
 
     @After
     fun teardown() {
-        IdlingRegistry.getInstance().unregister(idlingResource)
+        //IdlingRegistry.getInstance().unregister(idlingResource)
     }
 
     @Test
