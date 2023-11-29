@@ -1,5 +1,6 @@
 package com.misw.vinilos.data.datasource.api
 
+import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Musician
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -13,5 +14,10 @@ interface MusicianApi {
 
     @GET("$MUSICIANS/{id}")
     suspend fun getMusician(@Path("id") musicianId: Int?): Musician
+
+    @GET("$MUSICIANS/{id}/albums/")
+    suspend fun getAlbumsByMusicianId(@Path("id") musicianId: Int?): List<Album>
+
+
 }
 

@@ -144,6 +144,23 @@ class VinilosRepositoryImpl @Inject constructor(
                 }
         }
 
+        override fun getAlbumsByMusicianId(musicianId: Int?): Flow<List<Album>> {
+                return flow {
+                        try {
+                                _isRefreshing.value = true
+                                emit(localDataSource.getAlbumsByMusicianId(musicianId))
+                                val albums = remoteDataSource.getAlbumsByMusicianId(musicianId) as List<Album>
+                                emit(albums)
+                                val albumsEntityList = albums.map { it.toEntity() }
+                                localDataSource.insertAlbums(albumsEntityList)
+                                _isRefreshing.value = false
+                        } catch (e: Exception) {
+                                _isRefreshing.value = false
+                                e.toUiError()
+                        }
+                }
+        }
+
         override fun getCollectors(): Flow<List<Collector>> {
                 return flow {
                         try {

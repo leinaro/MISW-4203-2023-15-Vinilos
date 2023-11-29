@@ -15,6 +15,7 @@ interface VinilosRepository {
     fun getAlbum(albumId: Int?): Flow<Album>
     fun getCollector(collectorId: Int?): Flow<Collector>
     fun getMusician(musicianId: Int?): Flow<Musician>
+    fun getAlbumsByMusicianId(musicianId: Int?): Flow<List<Album>>
 
     val isRefreshing: StateFlow<Boolean>
     val isInternetAvailable: StateFlow<Boolean>

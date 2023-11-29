@@ -165,6 +165,24 @@ class VinilosViewModel @Inject constructor(
                 }
         }
     }
+
+     fun getAlbumsByMusicianId(musicianId: Int) {
+        viewModelScope.launch {
+            vinilosRepository.getAlbumsByMusicianId(musicianId)
+                .catch {
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al obtener los albums")
+                    )
+                }
+                .collect { albums ->
+                    setState(
+                        state.value.copy(
+                            albumsByMusician = albums,
+                        )
+                    )
+                }
+        }
+    }
     fun setEvent(event: VinilosEvent) {
         viewModelScope.launch {
             //mutex.withLock {

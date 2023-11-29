@@ -9,5 +9,6 @@ sealed class Routes(val path:String){
     object Collectors : Routes("collectors")
     object CollectorDetail : Routes("collector-detail/{collectorId}")
     object AlbumDetail : Routes("album/{albumId}")
+    object ArtistAddAlbum : Routes("musician/add-album/{musicianId}")
 }
 

@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -21,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -29,7 +36,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun MusicianDetail(musicianId: Int?) {
+fun MusicianDetail(musicianId: Int?, navController: NavController) {
     val composeView = LocalView.current
     val viewModel: VinilosViewModel = composeView.findViewTreeViewModelStoreOwner()?.let {
         hiltViewModel(it)
@@ -39,7 +46,7 @@ fun MusicianDetail(musicianId: Int?) {
 
     LaunchedEffect(key1 = null) {
         if (musicianId != null) {
-            viewModel.getMusician(musicianId = musicianId)
+            viewModel.getAlbumsByMusicianId(musicianId)
         }
     }
 
@@ -99,11 +106,35 @@ fun MusicianDetail(musicianId: Int?) {
                 .padding(top = 20.dp, bottom = 10.dp, start = 28.dp, end = 28.dp)
                 .fillMaxWidth()
         )
+        /*Text(
+            text = "Albumes",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Start,
+            modifier = Modifier
+                .padding(start = 28.dp, end = 28.dp)
+                .fillMaxWidth()
+        )
+        LazyVerticalGrid(columns = GridCells.Fixed(2),modifier = Modifier.padding(24.dp)) {
+            item(span = { GridItemSpan(currentLineSpan = 2) }){
+                Text(text = stringResource(R.string.artists), fontWeight= FontWeight.Bold, color= MaterialTheme.colorScheme.primary, fontSize = 24.sp, modifier=Modifier.fillMaxWidth())
+            }
+            items(items = state.albumsByMusician){ album ->
+                AlbumItem(album, {})
+            }
+        }*/
+
+        FloatingActionButton(
+            onClick = {navController.navigate("musician/add-album/${musicianId}") },
+            modifier = Modifier
+                .align(Alignment.End)
+        ) {
+            Icon(imageVector = Icons.Default.Add, contentDescription = "Go to another screen")
+        }
     }
 }
 
 @Composable
 @Preview
 fun MusicianDetailPreview() {
-    MusicianDetail(null)
+    MusicianDetail(1, rememberNavController())
 }
