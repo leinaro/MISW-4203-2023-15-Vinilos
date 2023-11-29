@@ -11,7 +11,7 @@ data class Album(
     @Json val description: String,
     @Json val genre: String,
     @Json val recordLabel: String,
-    @Json val musicianId: Int? = null
+    @Json var musicianId: Int? = null
 )
 
 fun Album.toEntity() = AlbumEntity(

@@ -50,5 +50,8 @@ class LocalDataSource @Inject constructor(
     }
 
     suspend fun getAlbumsByMusicianId(musicianId: Int?) = albumDao.getAllAlbumsByMusician(musicianId).toDto()
+    suspend fun updateAlbum(albumEntity: AlbumEntity) {
+        albumDao.update(albumEntity)
+    }
 
 }

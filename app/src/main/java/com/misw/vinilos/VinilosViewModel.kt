@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.misw.vinilos.VinilosEvent.NavigateTo
 import com.misw.vinilos.data.model.Album
+import com.misw.vinilos.data.model.Musician
 import com.misw.vinilos.domain.VinilosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -180,6 +181,20 @@ class VinilosViewModel @Inject constructor(
                             albumsByMusician = albums,
                         )
                     )
+                }
+        }
+    }
+
+    fun addAlbumToMusician(albumId: Int, musicianId: Int?) {
+        viewModelScope.launch {
+            vinilosRepository.addAlbumToMusician(albumId, musicianId)
+                .catch {
+                    setEvent(
+                        VinilosEvent.ShowError(it.message ?: "Error al agregar el album")
+                    )
+                }
+                .collect { album ->
+                    setEvent(VinilosEvent.ShowSuccess("Álbum agregado con exito"))
                 }
         }
     }
