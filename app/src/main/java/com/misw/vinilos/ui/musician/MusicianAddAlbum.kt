@@ -1,5 +1,4 @@
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -37,7 +36,6 @@ import coil.request.ImageRequest
 import com.misw.vinilos.VinilosViewModel
 import coil.size.Size
 import com.misw.vinilos.R
-import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.ui.album.errorMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,8 +48,8 @@ fun MusicianAddAlbum(musicianId: Int?) {
     } ?: hiltViewModel()
 
     val state by viewModel.state.collectAsState()
-    var recordLabel by remember { mutableStateOf("") }
-    var recordLabelError by remember { mutableStateOf("") }
+    var albumLabel by remember { mutableStateOf("") }
+    var albumLabelError by remember { mutableStateOf("") }
     var selectedAlbumId by remember { mutableStateOf<Int?>(null) }
     LaunchedEffect(key1 = null) {
         if (musicianId != null) {
@@ -68,12 +66,12 @@ fun MusicianAddAlbum(musicianId: Int?) {
     )
 
     fun validateRecordLabel(record: String):Boolean {
-        recordLabelError = if (record.isEmpty()) {
-            context.getString(R.string.empty_record)
+        albumLabelError = if (record.isEmpty()) {
+            context.getString(R.string.empty_album)
         } else {
             ""
         }
-        return recordLabelError.isEmpty()
+        return albumLabelError.isEmpty()
     }
 
     LazyColumn (
@@ -105,7 +103,7 @@ fun MusicianAddAlbum(musicianId: Int?) {
         )}
         item{
         Text(
-            text = "Albums",
+            text = "Agregar album",
             fontSize = 20.sp,
             textAlign = TextAlign.Start,
             modifier = Modifier
@@ -123,16 +121,16 @@ fun MusicianAddAlbum(musicianId: Int?) {
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = recordLabel,
-                    isError = recordLabel.isNotEmpty(),
-                    onValueChange = { recordLabel = it },
-                    label = { androidx.compose.material3.Text(stringResource(R.string.record_label)) },
+                    value = albumLabel,
+                    isError = albumLabel.isNotEmpty(),
+                    onValueChange = { albumLabel = it },
+                    label = { androidx.compose.material3.Text(stringResource(R.string.album_name)) },
                     modifier = Modifier
                         .testTag("record-field")
                         .fillMaxWidth()
                         .menuAnchor(),
-                    supportingText = if (recordLabelError.isNotEmpty()) {
-                        errorMessage(recordLabelError)
+                    supportingText = if (albumLabelError.isNotEmpty()) {
+                        errorMessage(albumLabelError)
                     } else {
                         null
                     },
@@ -151,7 +149,7 @@ fun MusicianAddAlbum(musicianId: Int?) {
                     options.forEach { selectionOption ->
                         DropdownMenuItem(
                             onClick = {
-                                recordLabel = selectionOption.first
+                                albumLabel = selectionOption.first
                                 selectedAlbumId=   selectionOption.second
                                 expanded = false
                             },
@@ -168,7 +166,7 @@ fun MusicianAddAlbum(musicianId: Int?) {
             Button(
                 onClick = {
                     if (listOf(
-                            validateRecordLabel(recordLabel),
+                            validateRecordLabel(albumLabel),
                         ).contains(false)){
                         return@Button
                     }
@@ -182,7 +180,7 @@ fun MusicianAddAlbum(musicianId: Int?) {
                     .fillMaxWidth()
             ) {
                 androidx.compose.material3.Text(
-                    text = stringResource(R.string.create),
+                    text = stringResource(R.string.add_new),
                 )
             }
         }

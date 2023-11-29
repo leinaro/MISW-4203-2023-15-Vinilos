@@ -195,6 +195,8 @@ class VinilosViewModel @Inject constructor(
                 }
                 .collect { album ->
                     setEvent(VinilosEvent.ShowSuccess("Álbum agregado con exito"))
+                    delay(1000)
+                    setEvent(NavigateTo("musician/${musicianId}"))
                 }
         }
     }
