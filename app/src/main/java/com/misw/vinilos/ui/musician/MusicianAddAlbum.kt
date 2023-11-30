@@ -1,4 +1,5 @@
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -80,17 +82,22 @@ fun MusicianAddAlbum(musicianId: Int?) {
             .fillMaxWidth()
     ) {
         item {
-            Image(
-                painter = painter,
-                contentDescription = state.musician?.name,
-                modifier = Modifier
-                    .width(200.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .padding(10.dp),
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Image(
+                    painter = painter,
+                    contentDescription = state.musician?.name,
+                    modifier = Modifier
+                        .width(200.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .padding(10.dp),
 
-                contentScale = ContentScale.Fit,
+                    contentScale = ContentScale.Fit,
 
-                )
+                    )
+            }
         }
         item{
         Text(
@@ -112,7 +119,9 @@ fun MusicianAddAlbum(musicianId: Int?) {
         )}
 
         item {
-            val options = state.albums.map { album -> album.name to album.id }
+            val options = state.albums
+                .filter { it.musicianId == null }
+                .map { album -> album.name to album.id }
             var expanded by remember { mutableStateOf(false) }
 
             ExposedDropdownMenuBox(

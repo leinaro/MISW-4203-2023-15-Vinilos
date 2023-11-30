@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -76,22 +78,29 @@ fun MusicianDetail(musicianId: Int?, navController: NavController) {
     val formattedDate = if (state.musician?.birthDate != null) originalFormat.parse(state.musician?.birthDate)
         ?.let { targetFormat.format(it) } else "Unknown Date"
 
-        Column(
+        LazyColumn (
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Image(
-                painter = painter,
-                contentDescription = state.musician?.name,
-                modifier = Modifier
-                    .width(200.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .padding(10.dp),
+            item{
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painter,
+                        contentDescription = state.musician?.name,
+                        modifier = Modifier
+                            .width(200.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .padding(10.dp),
 
-                contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Fit,
 
-                )
-
+                        )
+                }
+                }
+            item{
             Text(
                 text = "Artista: ${state.musician?.name}",
                 fontSize = 20.sp,
@@ -99,51 +108,65 @@ fun MusicianDetail(musicianId: Int?, navController: NavController) {
                 modifier = Modifier
                     .padding(start = 28.dp, end = 28.dp)
                     .fillMaxWidth()
-            )
-
-            Text(
-                text = "Fecha de nacimiento: $formattedDate",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(start = 28.dp, end = 28.dp)
-                    .fillMaxWidth()
-            )
-
-            Text(
-                text = state.musician?.description ?: "",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .padding(top = 20.dp, bottom = 10.dp, start = 28.dp, end = 28.dp)
-                    .fillMaxWidth()
-            )
-            FloatingActionButton(
-                onClick = { navController.navigate("musician/add-album/${musicianId}") },
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Agrega un album al artista"
+            )}
+                item {
+                    Text(
+                        text = "Fecha de nacimiento: $formattedDate",
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier
+                            .padding(start = 28.dp, end = 28.dp)
+                            .fillMaxWidth()
+                    )
+                }
+            item {
+                Text(
+                    text = state.musician?.description ?: "",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 20.dp, bottom = 10.dp, start = 28.dp, end = 28.dp)
+                        .fillMaxWidth()
                 )
             }
-            Text(
-                text = stringResource(R.string.albums),
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 24.sp,
-                modifier = Modifier.fillMaxWidth()
-            )
-            LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.padding(24.dp)) {
 
-                items(items = state.albumsByMusician) { album ->
-                    AlbumItem(album, {})
+            item {
+                Text(
+                    text = stringResource(R.string.albums),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontSize = 24.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item{
+                LazyVerticalGrid(columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .heightIn(max = 400.dp)) {
+
+                    items(items = state.albumsByMusician) { album ->
+                        AlbumItem(album, {})
+                    }
                 }
             }
-
-
+            item {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    FloatingActionButton(
+                        onClick = { navController.navigate("musician/add-album/${musicianId}") },
+                        modifier = Modifier
+                            .padding(16.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Agrega un album al artista"
+                        )
+                    }
+                }
+            }
         }
 }
 
