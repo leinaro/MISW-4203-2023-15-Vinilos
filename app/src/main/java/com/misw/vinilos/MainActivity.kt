@@ -1,5 +1,6 @@
 package com.misw.vinilos
 
+import MusicianAddAlbum
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -297,7 +298,11 @@ fun MainScreen(
                 }
                 composable(Routes.ArtistDetail.path) { backStackEntry ->
                     val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
-                    MusicianDetail(musicianId = musicianId)
+                    MusicianDetail(musicianId = musicianId, navController = navController)
+                }
+                composable(Routes.ArtistAddAlbum.path) { backStackEntry ->
+                    val musicianId = backStackEntry.arguments?.getString("musicianId")?.toIntOrNull()
+                    MusicianAddAlbum(musicianId = musicianId)
                 }
             }
 
