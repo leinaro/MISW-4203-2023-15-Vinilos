@@ -6,6 +6,8 @@ import android.content.res.Resources
 import android.widget.ScrollView
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -119,7 +121,7 @@ class MainActivityTest {
 
         assertMainScreenLoaded()
 
-        composeTestRule.onNodeWithText("artistas").performClick()
+        composeTestRule.onNodeWithText("Artistas").performClick()
 
 
         assertArtistScreenLoaded()
@@ -134,7 +136,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithText("Vinilos").assertIsDisplayed()
         assertMainScreenLoaded()
 
-        composeTestRule.onNodeWithText("coleccionistas").performClick()
+        composeTestRule.onNodeWithText("Coleccionistas").performClick()
 
         assertCollectorScreenLoaded()
     }
@@ -142,15 +144,15 @@ class MainActivityTest {
     private fun assertMainScreenLoaded(){
         Thread.sleep(2000)
         composeTestRule.onNodeWithText("Vinilos").assertIsDisplayed()
-        composeTestRule.onNodeWithText("albums").assertIsDisplayed()
-        composeTestRule.onNodeWithText("artistas").assertIsDisplayed()
-        composeTestRule.onNodeWithText("coleccionistas").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Albumes").onFirst().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Artistas").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Coleccionistas").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Agregar nuevo.").assertIsDisplayed()
     }
 
     private fun assertAlbumsScreenLoaded() {
         Thread.sleep(1000)
-        composeTestRule.onNodeWithText("Albumes").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Albumes").onFirst().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Agregar nuevo.").assertIsDisplayed()
         albumList.forEach { album ->
             composeTestRule.onNodeWithContentDescription(album.name).assertIsDisplayed()
@@ -261,7 +263,7 @@ class MainActivityTest {
         composeTestRule.mainClock.autoAdvance = true
 
         Thread.sleep(1000)
-        composeTestRule.onNodeWithText("Artistas").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Artistas").onFirst().assertIsDisplayed()
 
         musicianList.forEach { musician ->
             composeTestRule.onNodeWithText(musician.name).assertIsDisplayed()
@@ -302,7 +304,7 @@ class MainActivityTest {
         composeTestRule.mainClock.autoAdvance = true
 
         Thread.sleep(1000)
-        composeTestRule.onNodeWithText("Coleccionistas").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Coleccionistas").onFirst().assertIsDisplayed()
 
         collectorList.forEach { collector ->
             composeTestRule.onNodeWithText(collector.name).assertIsDisplayed()
