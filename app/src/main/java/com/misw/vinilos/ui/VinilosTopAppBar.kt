@@ -14,11 +14,13 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.misw.vinilos.R
 import com.misw.vinilos.Routes
 import com.misw.vinilos.ui.theme.VinilosTheme
 
@@ -34,7 +36,7 @@ fun VinilosTopAppBar(
         title = {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Vinilos",
+                text = stringResource(id = R.string.app_name),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.primary,
             )
