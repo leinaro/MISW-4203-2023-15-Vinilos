@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">रिकॉर्ड</string>
+  <string name="empty_url">URL खाली नहीं हो सकता</string>
+  <string name="empty_name">नाम खाली नहीं हो सकता</string>
+  <string name="empty_date">रिलीज़ तिथि खाली नहीं हो सकती</string>
+  <string name="empty_desc">विवरण खाली नहीं हो सकता</string>
+  <string name="empty_genre">शैली खाली नहीं हो सकती</string>
+  <string name="empty_record">रेकॉर्ड लेबल खाली नहीं हो सकता</string>
+  <string name="empty_album">एल्बम खाली नहीं हो सकता</string>
+  <string name="create_album">एल्बम बनाएं</string>
+  <string name="default_image">डिफ़ॉल्ट छवि</string>
+  <string name="image_url">छवि का URL</string>
+  <string name="album_name">एल्बम का नाम</string>
+  <string name="release_date">रिलीज़ तिथि</string>
+  <string name="select_date">तारीख चुनें</string>
+  <string name="description">विवरण</string>
+  <string name="genre">शैली</string>
+  <string name="record_label">रेकॉर्ड लेबल</string>
+  <string name="create">बनाएं</string>
+  <string name="albums">एल्बम</string>
+  <string name="collectors">संग्रहक</string>
+  <string name="authors">अंद्रेस सोलर, डारियो रियोस, इमानुएल रोड्रिग्ज़, इनेस रोज़ास</string>
+  <string name="no_internet_mode">आप डिजिटल संन्यासी मोड में हैं। इंटरनेट नहीं है।</string>
+  <string name="close">बंद करें</string>
+  <string name="add_new">नया जोड़ें</string>
+  <string name="artists">कलाकार</string>
+</resources>

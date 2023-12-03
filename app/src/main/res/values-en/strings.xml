@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Vinyls</string>
+  <string name="empty_url">URL cannot be empty</string>
+  <string name="empty_name">Name cannot be empty</string>
+  <string name="empty_date">Release date cannot be empty</string>
+  <string name="empty_desc">Description cannot be empty</string>
+  <string name="empty_genre">Genre cannot be empty</string>
+  <string name="empty_record">Record label cannot be empty</string>
+  <string name="empty_album">Album name cannot be empty</string>
+  <string name="create_album">Create Album</string>
+  <string name="default_image">Default Image</string>
+  <string name="image_url">Image URL</string>
+  <string name="album_name">Album Name</string>
+  <string name="release_date">Release Date</string>
+  <string name="select_date">Select date.</string>
+  <string name="description">Description</string>
+  <string name="genre">Genre</string>
+  <string name="record_label">Record Label</string>
+  <string name="create">Create</string>
+  <string name="albums">Albums</string>
+  <string name="collectors">Collectors</string>
+  <string name="authors">Andres Soler, Dario Rios, Emmanuel Rodriguez, Ines Rojas</string>
+  <string name="no_internet_mode">You are in digital hermit mode. No internet.</string>
+  <string name="close">Close</string>
+  <string name="add_new">Add New</string>
+  <string name="artists">Artists</string>
+</resources>

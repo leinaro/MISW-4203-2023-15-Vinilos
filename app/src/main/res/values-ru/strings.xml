@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Винилы</string>
+  <string name="empty_url">URL не может быть пустым</string>
+  <string name="empty_name">Имя не может быть пустым</string>
+  <string name="empty_date">Дата выпуска не может быть пустой</string>
+  <string name="empty_desc">Описание не может быть пустым</string>
+  <string name="empty_genre">Жанр не может быть пустым</string>
+  <string name="empty_record">Запись не может быть пустой</string>
+  <string name="empty_album">Альбом не может быть пустым</string>
+  <string name="create_album">Создать альбом</string>
+  <string name="default_image">Изображение по умолчанию</string>
+  <string name="image_url">URL изображения</string>
+  <string name="album_name">Название альбома</string>
+  <string name="release_date">Дата выпуска</string>
+  <string name="select_date">Выбрать дату</string>
+  <string name="description">Описание</string>
+  <string name="genre">Жанр</string>
+  <string name="record_label">Записывающая компания</string>
+  <string name="create">Создать</string>
+  <string name="albums">Альбомы</string>
+  <string name="collectors">Коллекционеры</string>
+  <string name="authors">Андрес Солер, Дарио Риос, Эммануэль Родригес, Инес Рохас</string>
+  <string name="no_internet_mode">Вы находитесь в режиме цифрового отшельника. Нет интернета.</string>
+  <string name="close">закрыть</string>
+  <string name="add_new">Добавить новое</string>
+  <string name="artists">Артисты</string>
+</resources>

@@ -4,6 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
+import com.misw.vinilos.data.model.Musician
 
 @Dao
 interface AlbumDao {
@@ -18,4 +20,11 @@ interface AlbumDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(albumEntity: AlbumEntity)
+
+    @Query("SELECT * FROM albumentity WHERE musician_id = :musicianId")
+    suspend fun getAllAlbumsByMusician(musicianId: Int?): List<AlbumEntity>
+
+    @Update
+    suspend fun update(albumEntity: AlbumEntity): Int
+
 }
