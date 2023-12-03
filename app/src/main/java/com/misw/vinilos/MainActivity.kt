@@ -52,7 +52,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.misw.splash.SplashScreen
+import com.misw.vinilos.ui.splash.SplashScreen
 import com.misw.vinilos.R.string
 import com.misw.vinilos.VinilosEvent.Idle
 import com.misw.vinilos.VinilosEvent.NavigateBack
@@ -229,7 +229,10 @@ fun MainScreen(
                         navController.navigate(Routes.AlbumsCreate.path)
                     },
                 ) {
-                    Icon(Icons.Filled.Add, stringResource(string.add_new))
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = stringResource(string.add_new)
+                    )
                 }
             }
         },

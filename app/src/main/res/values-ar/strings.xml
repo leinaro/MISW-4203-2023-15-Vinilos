@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">الأسطوانات الفينيلية</string>
+  <string name="empty_url">لا يمكن أن يكون عنوان URL فارغًا</string>
+  <string name="empty_name">لا يمكن أن يكون الاسم فارغًا</string>
+  <string name="empty_date">لا يمكن أن تكون تاريخ الإصدار فارغًا</string>
+  <string name="empty_desc">لا يمكن أن يكون الوصف فارغًا</string>
+  <string name="empty_genre">لا يمكن أن يكون نوع الموسيقى فارغًا</string>
+  <string name="empty_record">لا يمكن أن تكون الشركة الإنتاجية فارغة</string>
+  <string name="empty_album">لا يمكن أن يكون الألبوم فارغًا</string>
+  <string name="create_album">إنشاء ألبوم</string>
+  <string name="default_image">الصورة الافتراضية</string>
+  <string name="image_url">رابط الصورة</string>
+  <string name="album_name">اسم الألبوم</string>
+  <string name="release_date">تاريخ الإصدار</string>
+  <string name="select_date">اختيار التاريخ</string>
+  <string name="description">الوصف</string>
+  <string name="genre">النوع الموسيقي</string>
+  <string name="record_label">الشركة الإنتاجية</string>
+  <string name="create">إنشاء</string>
+  <string name="albums">الألبومات</string>
+  <string name="collectors">المجمعون</string>
+  <string name="authors">أندريس سولير، داريو ريوس، إيمانويل رودريغيز، إينيس روخاس</string>
+  <string name="no_internet_mode">أنت في وضع العزل الرقمي. لا يوجد اتصال بالإنترنت.</string>
+  <string name="close">إغلاق</string>
+  <string name="add_new">إضافة جديد</string>
+  <string name="artists">الفنانون</string>
+</resources>

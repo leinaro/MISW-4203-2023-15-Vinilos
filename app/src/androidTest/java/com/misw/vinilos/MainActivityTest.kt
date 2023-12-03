@@ -1,6 +1,8 @@
 package com.misw.vinilos
 
 import android.R.id
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.widget.ScrollView
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -11,14 +13,12 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.test.espresso.Espresso
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.airbnb.lottie.model.LottieCompositionCache
 import com.misw.vinilos.data.model.Album
 import com.misw.vinilos.data.model.Collector
 import com.misw.vinilos.data.model.Musician
@@ -32,6 +32,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.security.AccessController.getContext
+import java.util.Locale
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -49,10 +51,23 @@ class MainActivityTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    private lateinit var idlingResource: LottieIdlingResource
+    //private lateinit var idlingResource: LottieIdlingResource
+
+    private fun setLocale(
+        language: String,
+        country: String,
+    ) {
+        val locale = Locale(language, country)
+        Locale.setDefault(locale)
+        val res: Resources = composeTestRule.activity.resources
+        val config: Configuration = res.configuration
+        config.locale = locale
+        res.updateConfiguration(config, res.displayMetrics)
+    }
 
     @Before
     fun setup() {
+        setLocale("es", "ES")
         /*LottieCompositionCache.getInstance().clear()
         idlingResource = LottieIdlingResource()
         IdlingRegistry.getInstance().register(idlingResource)*/
@@ -125,11 +140,12 @@ class MainActivityTest {
     }
 
     private fun assertMainScreenLoaded(){
-        Thread.sleep(1000)
+        Thread.sleep(2000)
         composeTestRule.onNodeWithText("Vinilos").assertIsDisplayed()
         composeTestRule.onNodeWithText("albums").assertIsDisplayed()
         composeTestRule.onNodeWithText("artistas").assertIsDisplayed()
         composeTestRule.onNodeWithText("coleccionistas").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Agregar nuevo.").assertIsDisplayed()
     }
 
     private fun assertAlbumsScreenLoaded() {
@@ -196,7 +212,7 @@ class MainActivityTest {
         composeTestRule.onNodeWithContentDescription("Seleccionar fecha.").performClick()
         val datePickerButton = Espresso.onView(
             Matchers.allOf(
-                ViewMatchers.withId(id.button1), ViewMatchers.withText("OK"),
+                ViewMatchers.withId(id.button1), ViewMatchers.withText("Aceptar"),
                 ViewMatchers.withParent(
                     ViewMatchers.withParent(IsInstanceOf.instanceOf(ScrollView::class.java))
                 ),

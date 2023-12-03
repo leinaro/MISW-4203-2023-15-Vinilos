@@ -1,4 +1,4 @@
-package com.misw.splash
+package com.misw.vinilos.ui.splash
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec.RawRes
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.misw.vinilos.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -61,7 +63,7 @@ fun SplashScreen(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Vinilos",
+            text = stringResource(id = R.string.app_name),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.primary,
         )

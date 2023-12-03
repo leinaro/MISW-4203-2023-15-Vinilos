@@ -136,6 +136,26 @@ class MockVinilosRepositoryImpl @Inject constructor() : VinilosRepository {
         }
     }
 
+    override fun getAlbumsByMusicianId(musicianId: Int?): Flow<List<Album>> {
+        return flow {
+            emit(albumList)
+        }
+    }
+
+    override fun addAlbumToMusician(
+        albumId: Int?,
+        musicianId: Int?,
+    ): Flow<Album> {
+        return flow {
+            albumList.firstOrNull { album ->
+                album.id == albumId
+            }?.let { album ->
+                album.musicianId = musicianId
+                emit(album)
+            }
+        }
+    }
+
     override val isRefreshing: StateFlow<Boolean> = MutableStateFlow(false)
     override val isInternetAvailable: StateFlow<Boolean> = MutableStateFlow(true)
 }
